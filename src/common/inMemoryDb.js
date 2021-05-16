@@ -21,8 +21,8 @@ const createEntity = (group, entity) => {
   return null;
 };
 
-const updateEntity = (group, data, dataToUpdate) => {
-  const entity = getEntity(group, data);
+const updateEntity = (group, entityData, dataToUpdate) => {
+  const entity = getEntity(group, entityData);
 
   if (entity) {
     Object.entries(dataToUpdate).forEach(([key, value]) => {
