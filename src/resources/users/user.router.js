@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const User = require('./user.model');
 const usersService = require('./user.service');
+const validateUser = require('./user.validation.middleware');
 
 const asyncErrorHandler = require('../../utils/asyncErrorHandler');
 
@@ -22,6 +23,7 @@ router.route('/:id').get(
 );
 
 router.route('/').post(
+  validateUser,
   asyncErrorHandler(async (req, res) => {
     const user = await usersService.create(new User(req.body));
 
@@ -30,6 +32,7 @@ router.route('/').post(
 );
 
 router.route('/:id').put(
+  validateUser,
   asyncErrorHandler(async (req, res) => {
     const { id } = req.params;
     const user = await usersService.update(id, req.body);

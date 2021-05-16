@@ -1,6 +1,7 @@
 const router = require('express').Router({ mergeParams: true });
 const Task = require('./task.model');
 const tasksService = require('./task.service');
+const validateTask = require('./task.validation.middleware');
 
 const asyncErrorHandler = require('../../utils/asyncErrorHandler');
 
@@ -23,6 +24,7 @@ router.route('/:id').get(
 );
 
 router.route('/').post(
+  validateTask,
   asyncErrorHandler(async (req, res) => {
     const { boardId } = req.params;
     const task = await tasksService.create(new Task({ ...req.body, boardId }));
@@ -32,6 +34,7 @@ router.route('/').post(
 );
 
 router.route('/:id').put(
+  validateTask,
   asyncErrorHandler(async (req, res) => {
     const { boardId, id } = req.params;
     const task = await tasksService.update(boardId, id, req.body);
