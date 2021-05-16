@@ -13,13 +13,12 @@ const getById = async (id) => {
   return user;
 };
 
-const create = async (user) => {
-  const newUser = await DB.createEntity(GROUP, user);
+const create = async (data) => {
+  const user = await DB.createEntity(GROUP, data);
 
-  if (!newUser)
-    throw new errors.BAD_REQUEST(`User entity to create isn't valid`);
+  if (!user) throw new errors.BAD_REQUEST(`User entity to create isn't valid`);
 
-  return newUser;
+  return user;
 };
 
 const update = async (id, data) => {
@@ -31,7 +30,7 @@ const update = async (id, data) => {
 };
 
 const remove = async (id) => {
-  const isRemoved = DB.removeEntity(GROUP, { id });
+  const isRemoved = await DB.removeEntity(GROUP, { id });
 
   if (!isRemoved) throw new errors.NOT_FOUND(`User with id: ${id} not found`);
 };
