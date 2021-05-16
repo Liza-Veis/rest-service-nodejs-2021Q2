@@ -16,8 +16,9 @@ const getById = async (id) => {
 const create = async (data) => {
   const board = await DB.createEntity(GROUP, data);
 
-  if (!board)
+  if (!board) {
     throw new errors.BAD_REQUEST(`Board entity to create isn't valid`);
+  }
 
   return board;
 };

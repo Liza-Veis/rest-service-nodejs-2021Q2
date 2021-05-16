@@ -9,9 +9,14 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const board = await boardsService.getById(req.params.id);
+  const { id } = req.params;
+  try {
+    const board = await boardsService.getById(id);
 
-  res.json(board);
+    res.json(board);
+  } catch {
+    res.sendStatus(404);
+  }
 });
 
 router.post('/', async (req, res) => {
@@ -21,13 +26,15 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  const board = await boardsService.update(req.params.id, req.body);
+  const { id } = req.params;
+  const board = await boardsService.update(id, req.body);
 
   res.json(board);
 });
 
 router.delete('/:id', async (req, res) => {
-  await boardsService.remove(req.params.id);
+  const { id } = req.params;
+  await boardsService.remove(id);
 
   res.sendStatus(204);
 });

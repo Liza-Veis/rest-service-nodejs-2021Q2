@@ -9,7 +9,8 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const user = await usersService.getById(req.params.id);
+  const { id } = req.params;
+  const user = await usersService.getById(id);
 
   res.json(User.toResponse(user));
 });
@@ -21,13 +22,15 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  const user = await usersService.update(req.params.id, req.body);
+  const { id } = req.params;
+  const user = await usersService.update(id, req.body);
 
   res.json(User.toResponse(user));
 });
 
 router.delete('/:id', async (req, res) => {
-  await usersService.remove(req.params.id);
+  const { id } = req.params;
+  await usersService.remove(id);
 
   res.sendStatus(204);
 });
