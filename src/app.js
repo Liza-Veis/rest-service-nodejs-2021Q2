@@ -27,4 +27,14 @@ app.use('/boards', boardRouter);
 
 app.use('/boards/:boardId/tasks', taskRouter);
 
+app.use((err, req, res, next) => {
+  if (err?.status) {
+    res.status(err.status).send(err.message);
+  } else if (err) {
+    res.status(500).send('500. Internal Server Error');
+  }
+
+  next();
+});
+
 module.exports = app;
