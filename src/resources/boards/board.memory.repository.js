@@ -1,5 +1,6 @@
 const DB = require('../../common/inMemoryDb');
 const errors = require('../../errors');
+const Column = require('./column.model');
 
 const GROUP = 'boards';
 
@@ -24,7 +25,9 @@ const create = async (data) => {
 };
 
 const update = async (id, data) => {
-  const board = await DB.updateEntity(GROUP, { id }, data);
+  const columns = data.columns?.map((column) => new Column(column));
+  const dataToUpdate = columns ? { ...data, columns } : data;
+  const board = await DB.updateEntity(GROUP, { id }, dataToUpdate);
 
   if (!board) {
     throw new errors.BAD_REQUEST(`Board entity to update isn't valid`);
