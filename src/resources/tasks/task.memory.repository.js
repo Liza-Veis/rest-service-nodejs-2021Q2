@@ -3,16 +3,10 @@ const errors = require('../../errors');
 
 const GROUP = 'tasks';
 
-const getBoardTasks = async (boardId) => {
+const getAll = async (boardId) => {
   const tasks = await DB.getAllEntities(GROUP);
 
   return tasks.filter((task) => task.boardId === boardId);
-};
-
-const getUserTasks = async (userId) => {
-  const tasks = await DB.getAllEntities(GROUP);
-
-  return tasks.filter((task) => task.userId === userId);
 };
 
 const getById = async (boardId, id) => {
@@ -25,6 +19,12 @@ const getById = async (boardId, id) => {
   }
 
   return task;
+};
+
+const getAllByUserId = async (userId) => {
+  const tasks = await DB.getAllEntities(GROUP);
+
+  return tasks.filter((task) => task.userId === userId);
 };
 
 const create = async (data) => {
@@ -56,9 +56,9 @@ const remove = async (boardId, id) => {
 };
 
 module.exports = {
-  getBoardTasks,
-  getUserTasks,
+  getAll,
   getById,
+  getAllByUserId,
   create,
   update,
   remove,

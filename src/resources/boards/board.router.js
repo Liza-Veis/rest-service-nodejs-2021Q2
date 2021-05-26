@@ -1,12 +1,14 @@
+const { StatusCodes } = require('http-status-codes');
 const router = require('express').Router();
+
 const Board = require('./board.model');
 const boardsService = require('./board.service');
 const validateBoard = require('./board.validation.middleware');
 
-const asyncErrorHandler = require('../../utils/asyncErrorHandler');
+const catchError = require('../../utils/catchError');
 
 router.route('/').get(
-  asyncErrorHandler(async (req, res) => {
+  catchError(async (req, res) => {
     const boards = await boardsService.getAll();
 
     res.json(boards);
@@ -14,7 +16,7 @@ router.route('/').get(
 );
 
 router.route('/:id').get(
-  asyncErrorHandler(async (req, res) => {
+  catchError(async (req, res) => {
     const { id } = req.params;
     const board = await boardsService.getById(id);
 
@@ -24,16 +26,16 @@ router.route('/:id').get(
 
 router.route('/').post(
   validateBoard,
-  asyncErrorHandler(async (req, res) => {
+  catchError(async (req, res) => {
     const board = await boardsService.create(new Board(req.body));
 
-    res.status(201).json(board);
+    res.status(StatusCodes.CREATED).json(board);
   })
 );
 
 router.route('/:id').put(
   validateBoard,
-  asyncErrorHandler(async (req, res) => {
+  catchError(async (req, res) => {
     const { id } = req.params;
     const board = await boardsService.update(id, req.body);
 
@@ -42,11 +44,11 @@ router.route('/:id').put(
 );
 
 router.route('/:id').delete(
-  asyncErrorHandler(async (req, res) => {
+  catchError(async (req, res) => {
     const { id } = req.params;
     await boardsService.remove(id);
 
-    res.sendStatus(204);
+    res.sendStatus(StatusCodes.NO_CONTENT);
   })
 );
 

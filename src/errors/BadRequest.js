@@ -1,8 +1,10 @@
+const { StatusCodes, ReasonPhrases } = require('http-status-codes');
+
 class BAD_REQUEST extends Error {
-  constructor(message = 'Bad Request') {
+  constructor(message = ReasonPhrases.BAD_REQUEST) {
     super(message);
 
-    this.status = 400;
+    this.status = StatusCodes.BAD_REQUEST;
   }
 }
 

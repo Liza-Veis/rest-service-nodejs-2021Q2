@@ -10,7 +10,7 @@ const create = (user) => usersRepo.create(user);
 const update = (id, data) => usersRepo.update(id, data);
 
 const remove = async (id) => {
-  const tasks = await tasksService.getUserTasks(id);
+  const tasks = await tasksService.getAllByUserId(id);
 
   tasks.forEach((task) => {
     tasksService.update(task.boardId, task.id, { userId: null });

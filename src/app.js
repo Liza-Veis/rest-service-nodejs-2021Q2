@@ -2,6 +2,8 @@ const express = require('express');
 const swaggerUI = require('swagger-ui-express');
 const path = require('path');
 const YAML = require('yamljs');
+const { StatusCodes, ReasonPhrases } = require('http-status-codes');
+
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
@@ -31,7 +33,9 @@ app.use((err, req, res, next) => {
   if (err?.status) {
     res.status(err.status).send(err.message);
   } else if (err) {
-    res.status(500).send('500. Internal Server Error');
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send(ReasonPhrases.INTERNAL_SERVER_ERROR);
   }
 
   next();

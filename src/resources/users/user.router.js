@@ -1,12 +1,14 @@
+const { StatusCodes } = require('http-status-codes');
 const router = require('express').Router();
+
 const User = require('./user.model');
 const usersService = require('./user.service');
 const validateUser = require('./user.validation.middleware');
 
-const asyncErrorHandler = require('../../utils/asyncErrorHandler');
+const catchError = require('../../utils/catchError');
 
 router.route('/').get(
-  asyncErrorHandler(async (req, res) => {
+  catchError(async (req, res) => {
     const users = await usersService.getAll();
 
     res.json(users.map(User.toResponse));
@@ -14,7 +16,7 @@ router.route('/').get(
 );
 
 router.route('/:id').get(
-  asyncErrorHandler(async (req, res) => {
+  catchError(async (req, res) => {
     const { id } = req.params;
     const user = await usersService.getById(id);
 
@@ -24,16 +26,16 @@ router.route('/:id').get(
 
 router.route('/').post(
   validateUser,
-  asyncErrorHandler(async (req, res) => {
+  catchError(async (req, res) => {
     const user = await usersService.create(new User(req.body));
 
-    res.status(201).json(User.toResponse(user));
+    res.status(StatusCodes.CREATED).json(User.toResponse(user));
   })
 );
 
 router.route('/:id').put(
   validateUser,
-  asyncErrorHandler(async (req, res) => {
+  catchError(async (req, res) => {
     const { id } = req.params;
     const user = await usersService.update(id, req.body);
 
@@ -42,11 +44,11 @@ router.route('/:id').put(
 );
 
 router.route('/:id').delete(
-  asyncErrorHandler(async (req, res) => {
+  catchError(async (req, res) => {
     const { id } = req.params;
     await usersService.remove(id);
 
-    res.sendStatus(204);
+    res.sendStatus(StatusCodes.NO_CONTENT);
   })
 );
 
