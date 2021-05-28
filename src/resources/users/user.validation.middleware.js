@@ -2,6 +2,18 @@ const errors = require('../../errors');
 
 const userFields = ['id', 'name', 'login', 'password'];
 
+/**
+ * Users validation middleware module
+ * @module UsersValidation
+ */
+
+/**
+ * Validates a request body when creating and updating a user
+ * @param {Object} req Express request object
+ * @param {Object} res Express response object
+ * @param {Object} next Express next middleware function
+ * @returns {void}
+ */
 const validateUser = (req, res, next) => {
   const action = req.method === 'POST' ? 'create' : 'update';
   const errorMessage = `User entity to ${action} isn't valid`;
