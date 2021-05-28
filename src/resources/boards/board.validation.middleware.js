@@ -3,6 +3,18 @@ const errors = require('../../errors');
 const boardFields = ['id', 'title', 'columns'];
 const columnFields = ['id', 'title', 'order'];
 
+/**
+ * Boards validation middleware module
+ * @module BoardsValidation
+ */
+
+/**
+ * Validates a request body when creating and updating a board
+ * @param {Object} req Express request object
+ * @param {Object} res Express response object
+ * @param {Object} next Express next middleware function
+ * @returns {void}
+ */
 const validateBoard = (req, res, next) => {
   const action = req.method === 'POST' ? 'create' : 'update';
   const errorMessage = `Board entity to ${action} isn't valid`;
