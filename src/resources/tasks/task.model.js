@@ -1,8 +1,21 @@
-const { v4: uuid } = require('uuid');
+const uuid = require('uuid');
 
+/**
+ * Task class
+ * @property {string} id Task id
+ * @property {string} title Task title
+ * @property {string} description Task description
+ * @property {number} order Task order
+ * @property {string} userId User id
+ * @property {string} boardId Board id
+ * @property {string} columnId Column id
+ */
 class Task {
+  /**
+   * @param {Object} config Config to create a task
+   */
   constructor({
-    id = uuid(),
+    id = uuid.v4(),
     title = 'TASK',
     description = '',
     order = 0,
