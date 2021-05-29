@@ -1,5 +1,10 @@
 const errors = require('../../errors');
 
+/**
+ * Tasks validation middleware module
+ * @module TasksValidation
+ */
+
 const taskFields = [
   'id',
   'title',
@@ -9,11 +14,6 @@ const taskFields = [
   'columnId',
   'boardId',
 ];
-
-/**
- * Tasks validation middleware module
- * @module TasksValidation
- */
 
 /**
  * Validates a request body when creating and updating a task

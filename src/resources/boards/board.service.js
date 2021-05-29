@@ -22,7 +22,7 @@ const getById = (id) => boardsRepo.getById(id);
 
 /**
  * Creates a board
- * @param {Object} board config to create a board
+ * @param {Board} board board object
  * @returns {Promise<Board>} Promise object represents a created board
  */
 const create = (board) => boardsRepo.create(board);

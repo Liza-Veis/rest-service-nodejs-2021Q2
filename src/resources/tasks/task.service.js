@@ -30,7 +30,7 @@ const getById = (boardId, id) => tasksRepo.getById(boardId, id);
 
 /**
  * Creates a task
- * @param {Object} task config to create a task
+ * @param {Task} task task object
  * @returns {Promise<Task>} Promise object represents a created task
  */
 const create = (task) => tasksRepo.create(task);

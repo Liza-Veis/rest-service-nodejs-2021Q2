@@ -1,3 +1,8 @@
+/**
+ * In memory database module
+ * @module InMemoryDatabase
+ */
+
 const DB = {
   users: [],
   boards: [],
@@ -5,16 +10,11 @@ const DB = {
 };
 
 /**
- * In memory database module
- * @module InMemoryDatabase
- */
-
-/**
  * Returns an array of all entities
  * @param {string} group group name
- * @returns {Array<Object|null>} Array of entities or null
+ * @returns {Array<Object>} Array of entities or null
  */
-const getAllEntities = (group) => DB[group] || null;
+const getAllEntities = (group) => DB[group];
 
 /**
  * Returns an entity by data

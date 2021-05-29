@@ -1,12 +1,12 @@
 const errors = require('../../errors');
 
-const boardFields = ['id', 'title', 'columns'];
-const columnFields = ['id', 'title', 'order'];
-
 /**
  * Boards validation middleware module
  * @module BoardsValidation
  */
+
+const boardFields = ['id', 'title', 'columns'];
+const columnFields = ['id', 'title', 'order'];
 
 /**
  * Validates a request body when creating and updating a board

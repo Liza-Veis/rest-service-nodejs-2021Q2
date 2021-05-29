@@ -2,12 +2,12 @@ const DB = require('../../common/inMemoryDb');
 const errors = require('../../errors');
 const Task = require('./task.model'); // eslint-disable-line no-unused-vars
 
-const GROUP = 'tasks';
-
 /**
  * Tasks repository module
  * @module TasksRepository
  */
+
+const GROUP = 'tasks';
 
 /**
  * Returns an array of all tasks on a board
@@ -51,15 +51,16 @@ const getById = async (boardId, id) => {
 
 /**
  * Creates a task
- * @param {Object} data config to create a task
+ * @param {Task} task task object
  * @returns {Promise<Task>} Promise object represents a created task
  */
-const create = async (data) => {
-  const task = await DB.createEntity(GROUP, data);
+const create = async (task) => {
+  const createdTask = await DB.createEntity(GROUP, task);
 
-  if (!task) throw new errors.BAD_REQUEST(`Task entity to create isn't valid`);
+  if (!createdTask)
+    throw new errors.BAD_REQUEST(`Task entity to create isn't valid`);
 
-  return task;
+  return createdTask;
 };
 
 /**

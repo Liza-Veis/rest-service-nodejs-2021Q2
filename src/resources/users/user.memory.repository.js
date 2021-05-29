@@ -2,12 +2,12 @@ const DB = require('../../common/inMemoryDb');
 const errors = require('../../errors');
 const User = require('./user.model'); // eslint-disable-line no-unused-vars
 
-const GROUP = 'users';
-
 /**
  * Users repository module
  * @module UsersRepository
  */
+
+const GROUP = 'users';
 
 /**
  * Returns an array of all users
@@ -30,15 +30,17 @@ const getById = async (id) => {
 
 /**
  * Creates a user
- * @param {Object} data config to create a user
+ * @param {User} user user object
  * @returns {Promise<User>} Promise object represents a created user
  */
-const create = async (data) => {
-  const user = await DB.createEntity(GROUP, data);
+const create = async (user) => {
+  const createdUser = await DB.createEntity(GROUP, user);
 
-  if (!user) throw new errors.BAD_REQUEST(`User entity to create isn't valid`);
+  if (!createdUser) {
+    throw new errors.BAD_REQUEST(`User entity to create isn't valid`);
+  }
 
-  return user;
+  return createdUser;
 };
 
 /**

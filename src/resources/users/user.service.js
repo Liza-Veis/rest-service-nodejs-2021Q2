@@ -22,7 +22,7 @@ const getById = (id) => usersRepo.getById(id);
 
 /**
  * Creates a user
- * @param {Object} user config to create a user
+ * @param {User} user user object
  * @returns {Promise<User>} Promise object represents a created user
  */
 const create = (user) => usersRepo.create(user);

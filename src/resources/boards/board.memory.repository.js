@@ -3,12 +3,12 @@ const errors = require('../../errors');
 const Board = require('./board.model'); // eslint-disable-line no-unused-vars
 const Column = require('./column.model');
 
-const GROUP = 'boards';
-
 /**
  * Boards repository module
  * @module BoardsRepository
  */
+
+const GROUP = 'boards';
 
 /**
  * Returns an array of all boards
@@ -31,17 +31,17 @@ const getById = async (id) => {
 
 /**
  * Creates a board
- * @param {Object} data config to create a board
+ * @param {Board} board board object
  * @returns {Promise<Board>} Promise object represents a created board
  */
-const create = async (data) => {
-  const board = await DB.createEntity(GROUP, data);
+const create = async (board) => {
+  const createdBoard = await DB.createEntity(GROUP, board);
 
-  if (!board) {
+  if (!createdBoard) {
     throw new errors.BAD_REQUEST(`Board entity to create isn't valid`);
   }
 
-  return board;
+  return createdBoard;
 };
 
 /**

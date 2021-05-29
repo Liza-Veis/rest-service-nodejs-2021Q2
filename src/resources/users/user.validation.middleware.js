@@ -1,11 +1,11 @@
 const errors = require('../../errors');
 
-const userFields = ['id', 'name', 'login', 'password'];
-
 /**
  * Users validation middleware module
  * @module UsersValidation
  */
+
+const userFields = ['id', 'name', 'login', 'password'];
 
 /**
  * Validates a request body when creating and updating a user
