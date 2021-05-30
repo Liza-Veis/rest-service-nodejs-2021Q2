@@ -3,11 +3,13 @@ import { Task } from '../resources/tasks/task.model';
 import { Board } from '../resources/boards/board.model';
 
 export type TGroup = 'users' | 'boards' | 'tasks';
+
 type TEntity = {
   users: User;
   boards: Board;
   tasks: Task;
 };
+
 type TDB = {
   users: TEntity['users'][];
   boards: TEntity['boards'][];
