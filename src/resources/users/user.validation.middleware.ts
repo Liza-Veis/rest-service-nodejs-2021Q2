@@ -1,4 +1,5 @@
-const errors = require('../../errors');
+import { Request, Response, NextFunction } from 'express';
+import * as errors from '../../errors';
 
 /**
  * Users validation middleware module
@@ -14,7 +15,7 @@ const userFields = ['id', 'name', 'login', 'password'];
  * @param {Object} next Express next middleware function
  * @returns {void}
  */
-const validateUser = (req, res, next) => {
+export const validateUser = (req: Request, _: Response, next: NextFunction) => {
   const action = req.method === 'POST' ? 'create' : 'update';
   const errorMessage = `User entity to ${action} isn't valid`;
   const props = Object.keys(req.body || []);
@@ -28,5 +29,3 @@ const validateUser = (req, res, next) => {
 
   next();
 };
-
-module.exports = validateUser;

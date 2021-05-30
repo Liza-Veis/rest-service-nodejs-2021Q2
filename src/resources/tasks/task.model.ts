@@ -1,4 +1,4 @@
-const uuid = require('uuid');
+import { v4 } from 'uuid';
 
 /**
  * Task class
@@ -10,17 +10,31 @@ const uuid = require('uuid');
  * @property {string} boardId Board id
  * @property {string} columnId Column id
  */
-class Task {
+export class Task {
+  id: string;
+
+  title: string;
+
+  description: string;
+
+  order: number;
+
+  userId: string | null;
+
+  boardId: string | null;
+
+  columnId: string | null;
+
   /**
    * @param {Object} config Config to create a task
    */
   constructor({
-    id = uuid.v4(),
+    id = v4(),
     title = 'TASK',
     description = '',
     order = 0,
+    boardId = null,
     userId = null,
-    boardId,
     columnId = null,
   } = {}) {
     this.id = id;
@@ -32,5 +46,3 @@ class Task {
     this.columnId = columnId;
   }
 }
-
-module.exports = Task;

@@ -1,6 +1,7 @@
-const tasksService = require('../tasks/task.service');
-const usersRepo = require('./user.memory.repository');
-const User = require('./user.model'); // eslint-disable-line no-unused-vars
+import * as tasksService from '../tasks/task.service';
+import * as usersRepo from './user.memory.repository';
+import { User } from './user.model';
+import { Task } from '../tasks/task.model';
 
 /**
  * Users service module
@@ -11,21 +12,21 @@ const User = require('./user.model'); // eslint-disable-line no-unused-vars
  * Returns an array of all users
  * @returns {Promise<Array<User>>} Promise object represents an array of users
  */
-const getAll = () => usersRepo.getAll();
+export const getAll = () => usersRepo.getAll();
 
 /**
  * Returns a user by id
  * @param {string} id user id
  * @returns {Promise<User>} Promise object represents a user
  */
-const getById = (id) => usersRepo.getById(id);
+export const getById = (id: string) => usersRepo.getById(id);
 
 /**
  * Creates a user
  * @param {User} user user object
  * @returns {Promise<User>} Promise object represents a created user
  */
-const create = (user) => usersRepo.create(user);
+export const create = (user: User) => usersRepo.create(user);
 
 /**
  * Updates a user
@@ -33,21 +34,22 @@ const create = (user) => usersRepo.create(user);
  * @param {Object} data data to update
  * @returns {Promise<User>} Promise object represents an updated user
  */
-const update = (id, data) => usersRepo.update(id, data);
+export const update = (id: string, data: Partial<User>) =>
+  usersRepo.update(id, data);
 
 /**
  * Removes a user
  * @param {string} id user id
  * @returns {Promise<void>} Promise object
  */
-const remove = async (id) => {
+export const remove = async (id: string) => {
   const tasks = await tasksService.getAllByUserId(id);
 
-  tasks.forEach((task) => {
-    tasksService.update(task.boardId, task.id, { userId: null });
+  tasks.forEach((task: Task) => {
+    if (task.boardId) {
+      tasksService.update(task.boardId, task.id, { userId: null });
+    }
   });
 
   usersRepo.remove(id);
 };
-
-module.exports = { getAll, getById, create, update, remove };

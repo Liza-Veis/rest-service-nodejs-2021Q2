@@ -1,27 +1,27 @@
-const DB = require('../../common/inMemoryDb');
-const errors = require('../../errors');
-const Board = require('./board.model'); // eslint-disable-line no-unused-vars
-const Column = require('./column.model');
+import * as DB from '../../common/inMemoryDb';
+import * as errors from '../../errors';
+import { Board } from './board.model';
+import { Column } from './column.model';
 
 /**
  * Boards repository module
  * @module BoardsRepository
  */
 
-const GROUP = 'boards';
+export const GROUP = 'boards';
 
 /**
  * Returns an array of all boards
  * @returns {Promise<Array<Board>>} Promise object represents an array of boards
  */
-const getAll = async () => DB.getAllEntities(GROUP);
+export const getAll = async () => DB.getAllEntities(GROUP);
 
 /**
  * Returns a board by id
  * @param {string} id board id
  * @returns {Promise<Board>} Promise object represents a board
  */
-const getById = async (id) => {
+export const getById = async (id: string) => {
   const board = await DB.getEntity(GROUP, { id });
 
   if (!board) throw new errors.NOT_FOUND(`Board with id: ${id} not found`);
@@ -34,7 +34,7 @@ const getById = async (id) => {
  * @param {Board} board board object
  * @returns {Promise<Board>} Promise object represents a created board
  */
-const create = async (board) => {
+export const create = async (board: Board) => {
   const createdBoard = await DB.createEntity(GROUP, board);
 
   if (!createdBoard) {
@@ -50,7 +50,7 @@ const create = async (board) => {
  * @param {Object} data data to update
  * @returns {Promise<Board>} Promise object represents an updated board
  */
-const update = async (id, data) => {
+export const update = async (id: string, data: Partial<Board>) => {
   const columns = data.columns?.map((column) => new Column(column));
   const dataToUpdate = columns ? { ...data, columns } : data;
   const board = await DB.updateEntity(GROUP, { id }, dataToUpdate);
@@ -67,10 +67,8 @@ const update = async (id, data) => {
  * @param {string} id board id
  * @returns {Promise<void>} Promise object
  */
-const remove = async (id) => {
+export const remove = async (id: string) => {
   const isRemoved = await DB.removeEntity(GROUP, { id });
 
   if (!isRemoved) throw new errors.NOT_FOUND(`Board with id: ${id} not found`);
 };
-
-module.exports = { getAll, getById, create, update, remove };

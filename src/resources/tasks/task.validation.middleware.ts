@@ -1,4 +1,5 @@
-const errors = require('../../errors');
+import { Request, Response, NextFunction } from 'express';
+import * as errors from '../../errors';
 
 /**
  * Tasks validation middleware module
@@ -22,7 +23,7 @@ const taskFields = [
  * @param {Object} next Express next middleware function
  * @returns {void}
  */
-const validateTask = (req, res, next) => {
+export const validateTask = (req: Request, _: Response, next: NextFunction) => {
   const action = req.method === 'POST' ? 'create' : 'update';
   const errorMessage = `Task entity to ${action} isn't valid`;
   const props = Object.keys(req.body || []);
@@ -36,5 +37,3 @@ const validateTask = (req, res, next) => {
 
   next();
 };
-
-module.exports = validateTask;

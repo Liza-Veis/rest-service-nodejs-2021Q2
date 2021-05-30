@@ -1,6 +1,6 @@
-const DB = require('../../common/inMemoryDb');
-const errors = require('../../errors');
-const Task = require('./task.model'); // eslint-disable-line no-unused-vars
+import * as DB from '../../common/inMemoryDb';
+import * as errors from '../../errors';
+import { Task } from './task.model';
 
 /**
  * Tasks repository module
@@ -14,8 +14,8 @@ const GROUP = 'tasks';
  * @param {string} boardId board id
  * @returns {Promise<Array<Task>>} Promise object represents an array of tasks
  */
-const getAll = async (boardId) => {
-  const tasks = await DB.getAllEntities(GROUP);
+export const getAll = async (boardId: string) => {
+  const tasks = await DB.getAllEntities(GROUP)!;
 
   return tasks.filter((task) => task.boardId === boardId);
 };
@@ -25,8 +25,8 @@ const getAll = async (boardId) => {
  * @param {string} userId user id
  * @returns {Promise<Array<Task>>} Promise object represents an array of tasks
  */
-const getAllByUserId = async (userId) => {
-  const tasks = await DB.getAllEntities(GROUP);
+export const getAllByUserId = async (userId: string) => {
+  const tasks = await DB.getAllEntities(GROUP)!;
 
   return tasks.filter((task) => task.userId === userId);
 };
@@ -37,7 +37,7 @@ const getAllByUserId = async (userId) => {
  * @param {string} id task id
  * @returns {Promise<Task>} Promise object represents a task
  */
-const getById = async (boardId, id) => {
+export const getById = async (boardId: string, id: string) => {
   const task = await DB.getEntity(GROUP, { boardId, id });
 
   if (!task) {
@@ -54,11 +54,12 @@ const getById = async (boardId, id) => {
  * @param {Task} task task object
  * @returns {Promise<Task>} Promise object represents a created task
  */
-const create = async (task) => {
+export const create = async (task: Task) => {
   const createdTask = await DB.createEntity(GROUP, task);
 
-  if (!createdTask)
+  if (!createdTask) {
     throw new errors.BAD_REQUEST(`Task entity to create isn't valid`);
+  }
 
   return createdTask;
 };
@@ -70,7 +71,11 @@ const create = async (task) => {
  * @param {Object} data data to update
  * @returns {Promise<Task>} Promise object represents an updated task
  */
-const update = async (boardId, id, data) => {
+export const update = async (
+  boardId: string,
+  id: string,
+  data: Partial<Task>
+) => {
   const task = await DB.updateEntity(GROUP, { boardId, id }, data);
 
   if (!task) {
@@ -86,7 +91,7 @@ const update = async (boardId, id, data) => {
  * @param {string} id task id
  * @returns {Promise<void>} Promise object
  */
-const remove = async (boardId, id) => {
+export const remove = async (boardId: string, id: string) => {
   const isRemoved = await DB.removeEntity(GROUP, { boardId, id });
 
   if (!isRemoved) {
@@ -94,13 +99,4 @@ const remove = async (boardId, id) => {
       `Task with id: ${id} on board with id: ${boardId} not found`
     );
   }
-};
-
-module.exports = {
-  getAll,
-  getAllByUserId,
-  getById,
-  create,
-  update,
-  remove,
 };

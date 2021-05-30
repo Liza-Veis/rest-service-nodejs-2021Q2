@@ -1,4 +1,6 @@
-const errors = require('../../errors');
+import { Request, Response, NextFunction } from 'express';
+import * as errors from '../../errors';
+import { Column } from './column.model';
 
 /**
  * Boards validation middleware module
@@ -15,7 +17,11 @@ const columnFields = ['id', 'title', 'order'];
  * @param {Object} next Express next middleware function
  * @returns {void}
  */
-const validateBoard = (req, res, next) => {
+export const validateBoard = (
+  req: Request,
+  _: Response,
+  next: NextFunction
+) => {
   const action = req.method === 'POST' ? 'create' : 'update';
   const errorMessage = `Board entity to ${action} isn't valid`;
   const props = Object.keys(req.body || []);
@@ -32,7 +38,7 @@ const validateBoard = (req, res, next) => {
     }
 
     const isValidColumns = req.body.columns.every(
-      (column) =>
+      (column: Partial<Column>) =>
         typeof column === 'object' &&
         Object.keys(column).every((prop) => columnFields.includes(prop))
     );
@@ -44,5 +50,3 @@ const validateBoard = (req, res, next) => {
 
   next();
 };
-
-module.exports = validateBoard;

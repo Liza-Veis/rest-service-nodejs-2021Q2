@@ -1,6 +1,6 @@
-const DB = require('../../common/inMemoryDb');
-const errors = require('../../errors');
-const User = require('./user.model'); // eslint-disable-line no-unused-vars
+import * as DB from '../../common/inMemoryDb';
+import * as errors from '../../errors';
+import { User } from './user.model';
 
 /**
  * Users repository module
@@ -13,15 +13,15 @@ const GROUP = 'users';
  * Returns an array of all users
  * @returns {Promise<Array<User>>} Promise object represents an array of users
  */
-const getAll = async () => DB.getAllEntities(GROUP);
+export const getAll = async (): Promise<User[]> => DB.getAllEntities(GROUP)!;
 
 /**
  * Returns a user by id
  * @param {string} id user id
  * @returns {Promise<User>} Promise object represents a user
  */
-const getById = async (id) => {
-  const user = await DB.getEntity(GROUP, { id });
+export const getById = async (id: string): Promise<User> => {
+  const user: User | null = await DB.getEntity(GROUP, { id });
 
   if (!user) throw new errors.NOT_FOUND(`User with id: ${id} not found`);
 
@@ -33,12 +33,11 @@ const getById = async (id) => {
  * @param {User} user user object
  * @returns {Promise<User>} Promise object represents a created user
  */
-const create = async (user) => {
+export const create = async (user: User): Promise<User> => {
   const createdUser = await DB.createEntity(GROUP, user);
 
-  if (!createdUser) {
+  if (!createdUser)
     throw new errors.BAD_REQUEST(`User entity to create isn't valid`);
-  }
 
   return createdUser;
 };
@@ -49,7 +48,10 @@ const create = async (user) => {
  * @param {Object} data data to update
  * @returns {Promise<User>} Promise object represents an updated user
  */
-const update = async (id, data) => {
+export const update = async (
+  id: string,
+  data: Partial<User>
+): Promise<User> => {
   const user = await DB.updateEntity(GROUP, { id }, data);
 
   if (!user) throw new errors.BAD_REQUEST(`User entity to update isn't valid`);
@@ -62,10 +64,8 @@ const update = async (id, data) => {
  * @param {string} id user id
  * @returns {Promise<void>} Promise object
  */
-const remove = async (id) => {
+export const remove = async (id: string) => {
   const isRemoved = await DB.removeEntity(GROUP, { id });
 
   if (!isRemoved) throw new errors.NOT_FOUND(`User with id: ${id} not found`);
 };
-
-module.exports = { getAll, getById, create, update, remove };

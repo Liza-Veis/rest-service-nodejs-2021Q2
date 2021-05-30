@@ -1,4 +1,4 @@
-const { StatusCodes } = require('http-status-codes');
+import StatusCodes from 'http-status-codes';
 
 /**
  * NotFound error class
@@ -6,7 +6,9 @@ const { StatusCodes } = require('http-status-codes');
  * @extends {Error}
  * @property {number} status status code
  */
-class NOT_FOUND extends Error {
+export class NotFound extends Error {
+  status: number;
+
   /**
    * @param {string} message Error message
    */
@@ -16,5 +18,3 @@ class NOT_FOUND extends Error {
     this.status = StatusCodes.NOT_FOUND;
   }
 }
-
-module.exports = NOT_FOUND;

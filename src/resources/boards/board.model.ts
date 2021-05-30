@@ -1,5 +1,5 @@
-const uuid = require('uuid');
-const Column = require('./column.model');
+import { v4 } from 'uuid';
+import { Column } from './column.model';
 
 /**
  * Board class
@@ -7,15 +7,19 @@ const Column = require('./column.model');
  * @property {string} title Board title
  * @property {Array<Column>} columns Board columns
  */
-class Board {
+export class Board {
+  id: string;
+
+  title: string;
+
+  columns: Column[];
+
   /**
    * @param {Object} config Config to create a board
    */
-  constructor({ id = uuid.v4(), title = 'BOARD', columns = [] } = {}) {
+  constructor({ id = v4(), title = 'BOARD', columns = [] } = {}) {
     this.id = id;
     this.title = title;
     this.columns = columns.map((column) => new Column(column));
   }
 }
-
-module.exports = Board;

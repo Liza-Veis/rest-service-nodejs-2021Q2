@@ -1,5 +1,5 @@
-const tasksRepo = require('./task.memory.repository');
-const Task = require('./task.model'); // eslint-disable-line no-unused-vars
+import * as tasksRepo from './task.memory.repository';
+import { Task } from './task.model';
 
 /**
  * Tasks service module
@@ -11,14 +11,15 @@ const Task = require('./task.model'); // eslint-disable-line no-unused-vars
  * @param {string} boardId board id
  * @returns {Promise<Array<Task>>} Promise object represents an array of tasks
  */
-const getAll = (boardId) => tasksRepo.getAll(boardId);
+export const getAll = (boardId: string) => tasksRepo.getAll(boardId);
 
 /**
  * Returns an array of all user tasks
  * @param {string} userId user id
  * @returns {Promise<Array<Task>>} Promise object represents an array of tasks
  */
-const getAllByUserId = (userId) => tasksRepo.getAllByUserId(userId);
+export const getAllByUserId = (userId: string) =>
+  tasksRepo.getAllByUserId(userId);
 
 /**
  * Returns a task by id and board id
@@ -26,14 +27,15 @@ const getAllByUserId = (userId) => tasksRepo.getAllByUserId(userId);
  * @param {string} id task id
  * @returns {Promise<Task>} Promise object represents a task
  */
-const getById = (boardId, id) => tasksRepo.getById(boardId, id);
+export const getById = (boardId: string, id: string) =>
+  tasksRepo.getById(boardId, id);
 
 /**
  * Creates a task
  * @param {Task} task task object
  * @returns {Promise<Task>} Promise object represents a created task
  */
-const create = (task) => tasksRepo.create(task);
+export const create = (task: Task) => tasksRepo.create(task);
 
 /**
  * Updates a task
@@ -42,7 +44,8 @@ const create = (task) => tasksRepo.create(task);
  * @param {Object} data data to update
  * @returns {Promise<Task>} Promise object represents an updated task
  */
-const update = (boardId, id, data) => tasksRepo.update(boardId, id, data);
+export const update = (boardId: string, id: string, data: Partial<Task>) =>
+  tasksRepo.update(boardId, id, data);
 
 /**
  * Removes a task
@@ -50,13 +53,5 @@ const update = (boardId, id, data) => tasksRepo.update(boardId, id, data);
  * @param {string} id task id
  * @returns {Promise<void>} Promise object
  */
-const remove = (boardId, id) => tasksRepo.remove(boardId, id);
-
-module.exports = {
-  getAll,
-  getAllByUserId,
-  getById,
-  create,
-  update,
-  remove,
-};
+export const remove = (boardId: string, id: string) =>
+  tasksRepo.remove(boardId, id);

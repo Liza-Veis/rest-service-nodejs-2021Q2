@@ -1,4 +1,4 @@
-const { StatusCodes } = require('http-status-codes');
+import StatusCodes from 'http-status-codes';
 
 /**
  * BadRequest error class
@@ -6,7 +6,9 @@ const { StatusCodes } = require('http-status-codes');
  * @extends {Error}
  * @property {number} status status code
  */
-class BAD_REQUEST extends Error {
+export class BadRequest extends Error {
+  status: number;
+
   /**
    * @param {string} message Error message
    */
@@ -16,5 +18,3 @@ class BAD_REQUEST extends Error {
     this.status = StatusCodes.BAD_REQUEST;
   }
 }
-
-module.exports = BAD_REQUEST;

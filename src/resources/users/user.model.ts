@@ -1,4 +1,4 @@
-const uuid = require('uuid');
+import { v4 } from 'uuid';
 
 /**
  * User class
@@ -7,12 +7,20 @@ const uuid = require('uuid');
  * @property {string} login User login
  * @property {string} password User password
  */
-class User {
+export class User {
+  id: string;
+
+  name: string;
+
+  login: string;
+
+  password: string;
+
   /**
    * @param {Object} config Config to create a user
    */
   constructor({
-    id = uuid.v4(),
+    id = v4(),
     name = 'USER',
     login = 'user',
     password = 'P@55w0rd',
@@ -29,10 +37,8 @@ class User {
    * @param {User} user User object
    * @returns {Object} User object without password
    */
-  static toResponse(user) {
+  static toResponse(user: User) {
     const { id, name, login } = user;
     return { id, name, login };
   }
 }
-
-module.exports = User;
