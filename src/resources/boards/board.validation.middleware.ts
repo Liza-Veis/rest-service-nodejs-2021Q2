@@ -2,21 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import * as errors from '../../errors';
 import { Column } from './column.model';
 
-/**
- * Boards validation middleware module
- * @module BoardsValidation
- */
-
 const boardFields = ['id', 'title', 'columns'];
 const columnFields = ['id', 'title', 'order'];
 
-/**
- * Validates a request body when creating and updating a board
- * @param {Object} req Express request object
- * @param {Object} res Express response object
- * @param {Object} next Express next middleware function
- * @returns {void}
- */
 export const validateBoard = (
   req: Request,
   _: Response,

@@ -2,24 +2,10 @@ import * as DB from '../../common/inMemoryDb';
 import * as errors from '../../errors';
 import { User } from './user.model';
 
-/**
- * Users repository module
- * @module UsersRepository
- */
-
 const GROUP = 'users';
 
-/**
- * Returns an array of all users
- * @returns {Promise<Array<User>>} Promise object represents an array of users
- */
 export const getAll = async (): Promise<User[]> => DB.getAllEntities(GROUP)!;
 
-/**
- * Returns a user by id
- * @param {string} id user id
- * @returns {Promise<User>} Promise object represents a user
- */
 export const getById = async (id: string): Promise<User> => {
   const user: User | null = await DB.getEntity(GROUP, { id });
 
@@ -28,11 +14,6 @@ export const getById = async (id: string): Promise<User> => {
   return user;
 };
 
-/**
- * Creates a user
- * @param {User} user user object
- * @returns {Promise<User>} Promise object represents a created user
- */
 export const create = async (user: User): Promise<User> => {
   const createdUser = await DB.createEntity(GROUP, user);
 
@@ -42,12 +23,6 @@ export const create = async (user: User): Promise<User> => {
   return createdUser;
 };
 
-/**
- * Updates a user
- * @param {string} id user id
- * @param {Object} data data to update
- * @returns {Promise<User>} Promise object represents an updated user
- */
 export const update = async (
   id: string,
   data: Partial<User>
@@ -59,11 +34,6 @@ export const update = async (
   return user;
 };
 
-/**
- * Removes a user
- * @param {string} id user id
- * @returns {Promise<void>} Promise object
- */
 export const remove = async (id: string): Promise<void> => {
   const isRemoved = await DB.removeEntity(GROUP, { id });
 

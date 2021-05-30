@@ -3,24 +3,10 @@ import * as errors from '../../errors';
 import { Board } from './board.model';
 import { Column } from './column.model';
 
-/**
- * Boards repository module
- * @module BoardsRepository
- */
-
 const GROUP = 'boards';
 
-/**
- * Returns an array of all boards
- * @returns {Promise<Array<Board>>} Promise object represents an array of boards
- */
 export const getAll = async (): Promise<Board[]> => DB.getAllEntities(GROUP);
 
-/**
- * Returns a board by id
- * @param {string} id board id
- * @returns {Promise<Board>} Promise object represents a board
- */
 export const getById = async (id: string): Promise<Board> => {
   const board = await DB.getEntity(GROUP, { id });
 
@@ -29,11 +15,6 @@ export const getById = async (id: string): Promise<Board> => {
   return board;
 };
 
-/**
- * Creates a board
- * @param {Board} board board object
- * @returns {Promise<Board>} Promise object represents a created board
- */
 export const create = async (board: Board): Promise<Board> => {
   const createdBoard = await DB.createEntity(GROUP, board);
 
@@ -44,12 +25,6 @@ export const create = async (board: Board): Promise<Board> => {
   return createdBoard;
 };
 
-/**
- * Updates a board
- * @param {string} id board id
- * @param {Object} data data to update
- * @returns {Promise<Board>} Promise object represents an updated board
- */
 export const update = async (
   id: string,
   data: Partial<Board>
@@ -65,11 +40,6 @@ export const update = async (
   return board;
 };
 
-/**
- * Removes a board
- * @param {string} id board id
- * @returns {Promise<void>} Promise object
- */
 export const remove = async (id: string): Promise<void> => {
   const isRemoved = await DB.removeEntity(GROUP, { id });
 

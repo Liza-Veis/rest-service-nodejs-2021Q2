@@ -1,20 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import * as errors from '../../errors';
 
-/**
- * Users validation middleware module
- * @module UsersValidation
- */
-
 const userFields = ['id', 'name', 'login', 'password'];
 
-/**
- * Validates a request body when creating and updating a user
- * @param {Object} req Express request object
- * @param {Object} res Express response object
- * @param {Object} next Express next middleware function
- * @returns {void}
- */
 export const validateUser = (
   req: Request,
   _: Response,

@@ -2,11 +2,6 @@ import { User } from '../resources/users/user.model';
 import { Task } from '../resources/tasks/task.model';
 import { Board } from '../resources/boards/board.model';
 
-/**
- * In memory database module
- * @module InMemoryDatabase
- */
-
 export type TGroup = 'users' | 'boards' | 'tasks';
 type TEntity = {
   users: User;
@@ -25,19 +20,8 @@ const DB: TDB = {
   tasks: [],
 };
 
-/**
- * Returns an array of all entities
- * @param {string} group group name
- * @returns {Array<Object>} Array of entities or null
- */
 export const getAllEntities = <T extends TGroup>(group: T): TDB[T] => DB[group];
 
-/**
- * Returns an entity by data
- * @param {string} group group name
- * @param {Object} data entity data
- * @returns {Object|null} Entity or null
- */
 export const getEntity = <T extends TGroup>(
   group: T,
   data: Partial<TEntity[T]>
@@ -48,12 +32,6 @@ export const getEntity = <T extends TGroup>(
     )
   ) || null;
 
-/**
- * Creates an entity
- * @param {string} group group name
- * @param {Object} entity config to create an entity
- * @returns {Object|null} Created entity or null
- */
 export const createEntity = <T extends TGroup>(
   group: T,
   entity: TEntity[T]
@@ -67,13 +45,6 @@ export const createEntity = <T extends TGroup>(
   return null;
 };
 
-/**
- * Updates an entity
- * @param {string} group group name
- * @param {Object} entityData entity data
- * @param {Object} dataToUpdate data to update
- * @returns {Object|null} Updated entity or null
- */
 export const updateEntity = <T extends TGroup>(
   group: T,
   entityData: Partial<TEntity[T]>,
@@ -90,12 +61,6 @@ export const updateEntity = <T extends TGroup>(
   return entity || null;
 };
 
-/**
- * Removes an entity
- * @param {string} group group name
- * @param {Object} data entity data
- * @returns {boolean} Is operation success
- */
 export const removeEntity = <T extends TGroup>(
   group: T,
   data: Partial<TEntity[T]>

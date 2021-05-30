@@ -1,11 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import * as errors from '../../errors';
 
-/**
- * Tasks validation middleware module
- * @module TasksValidation
- */
-
 const taskFields = [
   'id',
   'title',
@@ -16,13 +11,6 @@ const taskFields = [
   'boardId',
 ];
 
-/**
- * Validates a request body when creating and updating a task
- * @param {Object} req Express request object
- * @param {Object} res Express response object
- * @param {Object} next Express next middleware function
- * @returns {void}
- */
 export const validateTask = (
   req: Request,
   _: Response,
