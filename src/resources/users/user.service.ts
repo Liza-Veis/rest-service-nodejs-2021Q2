@@ -12,21 +12,21 @@ import { Task } from '../tasks/task.model';
  * Returns an array of all users
  * @returns {Promise<Array<User>>} Promise object represents an array of users
  */
-export const getAll = () => usersRepo.getAll();
+export const getAll = (): Promise<User[]> => usersRepo.getAll();
 
 /**
  * Returns a user by id
  * @param {string} id user id
  * @returns {Promise<User>} Promise object represents a user
  */
-export const getById = (id: string) => usersRepo.getById(id);
+export const getById = (id: string): Promise<User> => usersRepo.getById(id);
 
 /**
  * Creates a user
  * @param {User} user user object
  * @returns {Promise<User>} Promise object represents a created user
  */
-export const create = (user: User) => usersRepo.create(user);
+export const create = (user: User): Promise<User> => usersRepo.create(user);
 
 /**
  * Updates a user
@@ -34,7 +34,7 @@ export const create = (user: User) => usersRepo.create(user);
  * @param {Object} data data to update
  * @returns {Promise<User>} Promise object represents an updated user
  */
-export const update = (id: string, data: Partial<User>) =>
+export const update = (id: string, data: Partial<User>): Promise<User> =>
   usersRepo.update(id, data);
 
 /**
@@ -42,7 +42,7 @@ export const update = (id: string, data: Partial<User>) =>
  * @param {string} id user id
  * @returns {Promise<void>} Promise object
  */
-export const remove = async (id: string) => {
+export const remove = async (id: string): Promise<void> => {
   const tasks = await tasksService.getAllByUserId(id);
 
   tasks.forEach((task: Task) => {

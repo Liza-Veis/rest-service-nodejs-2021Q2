@@ -8,20 +8,20 @@ import { Column } from './column.model';
  * @module BoardsRepository
  */
 
-export const GROUP = 'boards';
+const GROUP = 'boards';
 
 /**
  * Returns an array of all boards
  * @returns {Promise<Array<Board>>} Promise object represents an array of boards
  */
-export const getAll = async () => DB.getAllEntities(GROUP);
+export const getAll = async (): Promise<Board[]> => DB.getAllEntities(GROUP);
 
 /**
  * Returns a board by id
  * @param {string} id board id
  * @returns {Promise<Board>} Promise object represents a board
  */
-export const getById = async (id: string) => {
+export const getById = async (id: string): Promise<Board> => {
   const board = await DB.getEntity(GROUP, { id });
 
   if (!board) throw new errors.NOT_FOUND(`Board with id: ${id} not found`);
@@ -34,7 +34,7 @@ export const getById = async (id: string) => {
  * @param {Board} board board object
  * @returns {Promise<Board>} Promise object represents a created board
  */
-export const create = async (board: Board) => {
+export const create = async (board: Board): Promise<Board> => {
   const createdBoard = await DB.createEntity(GROUP, board);
 
   if (!createdBoard) {
@@ -50,7 +50,10 @@ export const create = async (board: Board) => {
  * @param {Object} data data to update
  * @returns {Promise<Board>} Promise object represents an updated board
  */
-export const update = async (id: string, data: Partial<Board>) => {
+export const update = async (
+  id: string,
+  data: Partial<Board>
+): Promise<Board> => {
   const columns = data.columns?.map((column) => new Column(column));
   const dataToUpdate = columns ? { ...data, columns } : data;
   const board = await DB.updateEntity(GROUP, { id }, dataToUpdate);
@@ -67,7 +70,7 @@ export const update = async (id: string, data: Partial<Board>) => {
  * @param {string} id board id
  * @returns {Promise<void>} Promise object
  */
-export const remove = async (id: string) => {
+export const remove = async (id: string): Promise<void> => {
   const isRemoved = await DB.removeEntity(GROUP, { id });
 
   if (!isRemoved) throw new errors.NOT_FOUND(`Board with id: ${id} not found`);

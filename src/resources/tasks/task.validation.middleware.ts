@@ -23,7 +23,11 @@ const taskFields = [
  * @param {Object} next Express next middleware function
  * @returns {void}
  */
-export const validateTask = (req: Request, _: Response, next: NextFunction) => {
+export const validateTask = (
+  req: Request,
+  _: Response,
+  next: NextFunction
+): void => {
   const action = req.method === 'POST' ? 'create' : 'update';
   const errorMessage = `Task entity to ${action} isn't valid`;
   const props = Object.keys(req.body || []);

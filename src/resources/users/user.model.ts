@@ -37,7 +37,7 @@ export class User {
    * @param {User} user User object
    * @returns {Object} User object without password
    */
-  static toResponse(user: User) {
+  static toResponse(user: User): Pick<User, 'id' | 'name' | 'login'> {
     const { id, name, login } = user;
     return { id, name, login };
   }

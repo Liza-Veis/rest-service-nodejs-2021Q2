@@ -21,7 +21,7 @@ export const validateBoard = (
   req: Request,
   _: Response,
   next: NextFunction
-) => {
+): void => {
   const action = req.method === 'POST' ? 'create' : 'update';
   const errorMessage = `Board entity to ${action} isn't valid`;
   const props = Object.keys(req.body || []);

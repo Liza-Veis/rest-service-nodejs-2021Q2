@@ -15,7 +15,11 @@ const userFields = ['id', 'name', 'login', 'password'];
  * @param {Object} next Express next middleware function
  * @returns {void}
  */
-export const validateUser = (req: Request, _: Response, next: NextFunction) => {
+export const validateUser = (
+  req: Request,
+  _: Response,
+  next: NextFunction
+): void => {
   const action = req.method === 'POST' ? 'create' : 'update';
   const errorMessage = `User entity to ${action} isn't valid`;
   const props = Object.keys(req.body || []);

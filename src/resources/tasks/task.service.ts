@@ -11,14 +11,15 @@ import { Task } from './task.model';
  * @param {string} boardId board id
  * @returns {Promise<Array<Task>>} Promise object represents an array of tasks
  */
-export const getAll = (boardId: string) => tasksRepo.getAll(boardId);
+export const getAll = (boardId: string): Promise<Task[]> =>
+  tasksRepo.getAll(boardId);
 
 /**
  * Returns an array of all user tasks
  * @param {string} userId user id
  * @returns {Promise<Array<Task>>} Promise object represents an array of tasks
  */
-export const getAllByUserId = (userId: string) =>
+export const getAllByUserId = (userId: string): Promise<Task[]> =>
   tasksRepo.getAllByUserId(userId);
 
 /**
@@ -27,7 +28,7 @@ export const getAllByUserId = (userId: string) =>
  * @param {string} id task id
  * @returns {Promise<Task>} Promise object represents a task
  */
-export const getById = (boardId: string, id: string) =>
+export const getById = (boardId: string, id: string): Promise<Task> =>
   tasksRepo.getById(boardId, id);
 
 /**
@@ -35,7 +36,7 @@ export const getById = (boardId: string, id: string) =>
  * @param {Task} task task object
  * @returns {Promise<Task>} Promise object represents a created task
  */
-export const create = (task: Task) => tasksRepo.create(task);
+export const create = (task: Task): Promise<Task> => tasksRepo.create(task);
 
 /**
  * Updates a task
@@ -44,8 +45,11 @@ export const create = (task: Task) => tasksRepo.create(task);
  * @param {Object} data data to update
  * @returns {Promise<Task>} Promise object represents an updated task
  */
-export const update = (boardId: string, id: string, data: Partial<Task>) =>
-  tasksRepo.update(boardId, id, data);
+export const update = (
+  boardId: string,
+  id: string,
+  data: Partial<Task>
+): Promise<Task> => tasksRepo.update(boardId, id, data);
 
 /**
  * Removes a task
@@ -53,5 +57,5 @@ export const update = (boardId: string, id: string, data: Partial<Task>) =>
  * @param {string} id task id
  * @returns {Promise<void>} Promise object
  */
-export const remove = (boardId: string, id: string) =>
+export const remove = (boardId: string, id: string): Promise<void> =>
   tasksRepo.remove(boardId, id);

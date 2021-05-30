@@ -14,7 +14,7 @@ const GROUP = 'tasks';
  * @param {string} boardId board id
  * @returns {Promise<Array<Task>>} Promise object represents an array of tasks
  */
-export const getAll = async (boardId: string) => {
+export const getAll = async (boardId: string): Promise<Task[]> => {
   const tasks = await DB.getAllEntities(GROUP)!;
 
   return tasks.filter((task) => task.boardId === boardId);
@@ -25,7 +25,7 @@ export const getAll = async (boardId: string) => {
  * @param {string} userId user id
  * @returns {Promise<Array<Task>>} Promise object represents an array of tasks
  */
-export const getAllByUserId = async (userId: string) => {
+export const getAllByUserId = async (userId: string): Promise<Task[]> => {
   const tasks = await DB.getAllEntities(GROUP)!;
 
   return tasks.filter((task) => task.userId === userId);
@@ -37,7 +37,7 @@ export const getAllByUserId = async (userId: string) => {
  * @param {string} id task id
  * @returns {Promise<Task>} Promise object represents a task
  */
-export const getById = async (boardId: string, id: string) => {
+export const getById = async (boardId: string, id: string): Promise<Task> => {
   const task = await DB.getEntity(GROUP, { boardId, id });
 
   if (!task) {
@@ -54,7 +54,7 @@ export const getById = async (boardId: string, id: string) => {
  * @param {Task} task task object
  * @returns {Promise<Task>} Promise object represents a created task
  */
-export const create = async (task: Task) => {
+export const create = async (task: Task): Promise<Task> => {
   const createdTask = await DB.createEntity(GROUP, task);
 
   if (!createdTask) {
@@ -75,7 +75,7 @@ export const update = async (
   boardId: string,
   id: string,
   data: Partial<Task>
-) => {
+): Promise<Task> => {
   const task = await DB.updateEntity(GROUP, { boardId, id }, data);
 
   if (!task) {
@@ -91,7 +91,7 @@ export const update = async (
  * @param {string} id task id
  * @returns {Promise<void>} Promise object
  */
-export const remove = async (boardId: string, id: string) => {
+export const remove = async (boardId: string, id: string): Promise<void> => {
   const isRemoved = await DB.removeEntity(GROUP, { boardId, id });
 
   if (!isRemoved) {

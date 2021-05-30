@@ -64,7 +64,7 @@ export const update = async (
  * @param {string} id user id
  * @returns {Promise<void>} Promise object
  */
-export const remove = async (id: string) => {
+export const remove = async (id: string): Promise<void> => {
   const isRemoved = await DB.removeEntity(GROUP, { id });
 
   if (!isRemoved) throw new errors.NOT_FOUND(`User with id: ${id} not found`);
