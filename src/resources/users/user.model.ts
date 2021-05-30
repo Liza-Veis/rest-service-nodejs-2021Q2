@@ -21,7 +21,7 @@ export class User {
     this.password = password;
   }
 
-  static toResponse(user: User): Pick<User, 'id' | 'name' | 'login'> {
+  static toResponse(user: User): Omit<User, 'password'> {
     const { id, name, login } = user;
     return { id, name, login };
   }

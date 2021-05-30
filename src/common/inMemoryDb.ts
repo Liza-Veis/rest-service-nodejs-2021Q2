@@ -2,27 +2,26 @@ import { User } from '../resources/users/user.model';
 import { Task } from '../resources/tasks/task.model';
 import { Board } from '../resources/boards/board.model';
 
-export type TGroup = 'users' | 'boards' | 'tasks';
-
 type TEntity = {
   users: User;
   boards: Board;
   tasks: Task;
 };
 
-type TDB = {
-  users: TEntity['users'][];
-  boards: TEntity['boards'][];
-  tasks: TEntity['tasks'][];
+type TGroup = keyof TEntity;
+
+type TDataBase = {
+  [group in TGroup]: TEntity[group][];
 };
 
-const DB: TDB = {
+const DB: TDataBase = {
   users: [],
   boards: [],
   tasks: [],
 };
 
-export const getAllEntities = <T extends TGroup>(group: T): TDB[T] => DB[group];
+export const getAllEntities = <T extends TGroup>(group: T): TDataBase[T] =>
+  DB[group];
 
 export const getEntity = <T extends TGroup>(
   group: T,
