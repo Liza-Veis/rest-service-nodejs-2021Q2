@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { TaskMessages } from '../../common/messages';
 import * as errors from '../../errors';
 
 const taskFields = [
@@ -16,8 +17,10 @@ export const validateTask = (
   _: Response,
   next: NextFunction
 ): void => {
-  const action = req.method === 'POST' ? 'create' : 'update';
-  const errorMessage = `Task entity to ${action} isn't valid`;
+  const errorMessage =
+    req.method === 'POST'
+      ? TaskMessages.creationError
+      : TaskMessages.updateError;
   const props = Object.keys(req.body || []);
 
   if (!props.length) {

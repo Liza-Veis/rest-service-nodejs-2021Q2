@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { BoardMessages } from '../../common/messages';
 import * as errors from '../../errors';
 import { Column } from './column.model';
 
@@ -10,8 +11,10 @@ export const validateBoard = (
   _: Response,
   next: NextFunction
 ): void => {
-  const action = req.method === 'POST' ? 'create' : 'update';
-  const errorMessage = `Board entity to ${action} isn't valid`;
+  const errorMessage =
+    req.method === 'POST'
+      ? BoardMessages.creationError
+      : BoardMessages.updateError;
   const props = Object.keys(req.body || []);
 
   if (!props.length) {

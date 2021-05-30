@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { UserMessages } from '../../common/messages';
 import * as errors from '../../errors';
 
 const userFields = ['id', 'name', 'login', 'password'];
@@ -8,8 +9,10 @@ export const validateUser = (
   _: Response,
   next: NextFunction
 ): void => {
-  const action = req.method === 'POST' ? 'create' : 'update';
-  const errorMessage = `User entity to ${action} isn't valid`;
+  const errorMessage =
+    req.method === 'POST'
+      ? UserMessages.creationError
+      : UserMessages.updateError;
   const props = Object.keys(req.body || []);
 
   if (!props.length) {

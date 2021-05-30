@@ -1,9 +1,9 @@
-import StatusCodes from 'http-status-codes';
+import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 
 export class NotFound extends Error {
   status: number;
 
-  constructor(message = 'Not Found') {
+  constructor(message = ReasonPhrases.NOT_FOUND as string) {
     super(message);
 
     this.status = StatusCodes.NOT_FOUND;
