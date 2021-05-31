@@ -1,8 +1,9 @@
-import express, { ErrorRequestHandler } from 'express';
+import express from 'express';
 import swaggerUI from 'swagger-ui-express';
 import path from 'path';
 import YAML from 'yamljs';
-import { StatusCodes, ReasonPhrases } from 'http-status-codes';
+
+import { appErrorHandler } from './utils/appErrorHandler';
 
 import { router as userRouter } from './resources/users/user.router';
 import { router as boardRouter } from './resources/boards/board.router';
@@ -29,14 +30,4 @@ app.use('/boards', boardRouter);
 
 app.use('/boards/:boardId/tasks', taskRouter);
 
-app.use(((err, _, res, next) => {
-  if (err?.status) {
-    res.status(err.status).send(err.message);
-  } else if (err) {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send(ReasonPhrases.INTERNAL_SERVER_ERROR);
-  }
-
-  next();
-}) as ErrorRequestHandler);
+app.use(appErrorHandler);
