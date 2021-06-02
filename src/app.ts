@@ -3,7 +3,8 @@ import swaggerUI from 'swagger-ui-express';
 import path from 'path';
 import YAML from 'yamljs';
 
-import { appErrorHandler } from './utils/appErrorHandler';
+import { logger } from './utils/appLogger';
+import { errorHandler } from './utils/appErrorHandler';
 
 import { router as userRouter } from './resources/users/user.router';
 import { router as boardRouter } from './resources/boards/board.router';
@@ -24,10 +25,12 @@ app.use('/', (req, res, next) => {
   next();
 });
 
+app.use(logger.requestHandler);
+
 app.use('/users', userRouter);
 
 app.use('/boards', boardRouter);
 
 app.use('/boards/:boardId/tasks', taskRouter);
 
-app.use(appErrorHandler);
+app.use(errorHandler);
