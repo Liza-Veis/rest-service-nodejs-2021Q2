@@ -34,3 +34,12 @@ app.use('/boards', boardRouter);
 app.use('/boards/:boardId/tasks', taskRouter);
 
 app.use(errorHandler);
+
+process.on('uncaughtException', (err) => {
+  logger.error(err.stack || err.toString());
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (err: Error) => {
+  logger.error(err.stack || err.toString());
+});
