@@ -1,6 +1,8 @@
 import { Logger } from './Logger';
 
-export const logger = new Logger();
+export const logger = new Logger({
+  maxFileSizeInBytes: 5000000, // 5MB
+});
 
 logger.createFileStream({
   levels: ['info', 'error'],

@@ -37,9 +37,12 @@ app.use(errorHandler);
 
 process.on('uncaughtException', (err) => {
   logger.error(err.stack || err.toString());
-  process.exit(1);
+  logger.finish().then(() => process.exit(1));
 });
 
 process.on('unhandledRejection', (err: Error) => {
   logger.error(err.stack || err.toString());
 });
+
+// throw new Error('Oups');
+// Promise.reject(Error('oups'));
