@@ -1,8 +1,16 @@
-const { v4: uuid } = require('uuid');
+import { v4 } from 'uuid';
 
-class User {
+export class User {
+  id: string;
+
+  name: string;
+
+  login: string;
+
+  password: string;
+
   constructor({
-    id = uuid(),
+    id = v4(),
     name = 'USER',
     login = 'user',
     password = 'P@55w0rd',
@@ -13,10 +21,8 @@ class User {
     this.password = password;
   }
 
-  static toResponse(user) {
+  static toResponse(user: User): Omit<User, 'password'> {
     const { id, name, login } = user;
     return { id, name, login };
   }
 }
-
-module.exports = User;

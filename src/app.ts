@@ -1,14 +1,14 @@
-const express = require('express');
-const swaggerUI = require('swagger-ui-express');
-const path = require('path');
-const YAML = require('yamljs');
-const { StatusCodes, ReasonPhrases } = require('http-status-codes');
+import express, { ErrorRequestHandler } from 'express';
+import swaggerUI from 'swagger-ui-express';
+import path from 'path';
+import YAML from 'yamljs';
+import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 
-const userRouter = require('./resources/users/user.router');
-const boardRouter = require('./resources/boards/board.router');
-const taskRouter = require('./resources/tasks/task.router');
+import { router as userRouter } from './resources/users/user.router';
+import { router as boardRouter } from './resources/boards/board.router';
+import { router as taskRouter } from './resources/tasks/task.router';
 
-const app = express();
+export const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
 app.use(express.json());
@@ -29,7 +29,7 @@ app.use('/boards', boardRouter);
 
 app.use('/boards/:boardId/tasks', taskRouter);
 
-app.use((err, req, res, next) => {
+app.use(((err, _, res, next) => {
   if (err?.status) {
     res.status(err.status).send(err.message);
   } else if (err) {
@@ -39,6 +39,4 @@ app.use((err, req, res, next) => {
   }
 
   next();
-});
-
-module.exports = app;
+}) as ErrorRequestHandler);

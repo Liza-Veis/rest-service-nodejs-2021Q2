@@ -1,13 +1,27 @@
-const { v4: uuid } = require('uuid');
+import { v4 } from 'uuid';
 
-class Task {
+export class Task {
+  id: string;
+
+  title: string;
+
+  description: string;
+
+  order: number;
+
+  userId: string | null;
+
+  boardId: string | null;
+
+  columnId: string | null;
+
   constructor({
-    id = uuid(),
+    id = v4(),
     title = 'TASK',
     description = '',
     order = 0,
+    boardId = null,
     userId = null,
-    boardId,
     columnId = null,
   } = {}) {
     this.id = id;
@@ -19,5 +33,3 @@ class Task {
     this.columnId = columnId;
   }
 }
-
-module.exports = Task;
