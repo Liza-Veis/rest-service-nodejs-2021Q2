@@ -2,43 +2,43 @@ import { User } from '../resources/users/user.model';
 import { Task } from '../resources/tasks/task.model';
 import { Board } from '../resources/boards/board.model';
 
-type TEntity = {
+type Entity = {
   users: User;
   boards: Board;
   tasks: Task;
 };
 
-type TGroup = keyof TEntity;
+type Group = keyof Entity;
 
-type TDataBase = {
-  [group in TGroup]: TEntity[group][];
+type DataBase = {
+  [group in Group]: Entity[group][];
 };
 
-const DB: TDataBase = {
+const DB: DataBase = {
   users: [],
   boards: [],
   tasks: [],
 };
 
-export const getAllEntities = <T extends TGroup>(group: T): TDataBase[T] =>
+export const getAllEntities = <T extends Group>(group: T): DataBase[T] =>
   DB[group];
 
-export const getEntity = <T extends TGroup>(
+export const getEntity = <T extends Group>(
   group: T,
-  data: Partial<TEntity[T]>
-): TEntity[T] | null =>
-  (DB[group] as TEntity[T][])?.find((entity) =>
+  data: Partial<Entity[T]>
+): Entity[T] | null =>
+  (DB[group] as Entity[T][])?.find((entity) =>
     Object.entries(data).every(
-      ([key, value]) => entity[key as keyof TEntity[T]] === value
+      ([key, value]) => entity[key as keyof Entity[T]] === value
     )
   ) || null;
 
-export const createEntity = <T extends TGroup>(
+export const createEntity = <T extends Group>(
   group: T,
-  entity: TEntity[T]
-): TEntity[T] | null => {
+  entity: Entity[T]
+): Entity[T] | null => {
   if (DB[group]) {
-    (DB[group] as TEntity[T][]).push(entity);
+    (DB[group] as Entity[T][]).push(entity);
 
     return entity;
   }
@@ -46,30 +46,30 @@ export const createEntity = <T extends TGroup>(
   return null;
 };
 
-export const updateEntity = <T extends TGroup>(
+export const updateEntity = <T extends Group>(
   group: T,
-  entityData: Partial<TEntity[T]>,
-  dataToUpdate: Partial<TEntity[T]>
-): TEntity[T] | null => {
+  entityData: Partial<Entity[T]>,
+  dataToUpdate: Partial<Entity[T]>
+): Entity[T] | null => {
   const entity = getEntity(group, entityData);
 
   if (entity) {
     Object.entries(dataToUpdate).forEach(([key, value]) => {
-      entity[key as keyof TEntity[T]] = value;
+      entity[key as keyof Entity[T]] = value;
     });
   }
 
   return entity || null;
 };
 
-export const removeEntity = <T extends TGroup>(
+export const removeEntity = <T extends Group>(
   group: T,
-  data: Partial<TEntity[T]>
+  data: Partial<Entity[T]>
 ): boolean => {
-  const entity: TEntity[T] | null = getEntity(group, data);
+  const entity: Entity[T] | null = getEntity(group, data);
 
   if (entity) {
-    const index = (DB[group] as TEntity[T][]).indexOf(entity);
+    const index = (DB[group] as Entity[T][]).indexOf(entity);
 
     DB[group].splice(index, 1);
 

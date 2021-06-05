@@ -3,6 +3,8 @@ import swaggerUI from 'swagger-ui-express';
 import path from 'path';
 import YAML from 'yamljs';
 
+import * as errors from './errors';
+import { RouteMessages } from './common/messages';
 import { logger } from './utils/appLogger';
 import { errorHandler } from './utils/appErrorHandler';
 
@@ -15,6 +17,8 @@ const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
 app.use(express.json());
 
+app.use(logger.requestHandler);
+
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.use('/', (req, res, next) => {
@@ -25,13 +29,16 @@ app.use('/', (req, res, next) => {
   next();
 });
 
-app.use(logger.requestHandler);
-
 app.use('/users', userRouter);
 
 app.use('/boards', boardRouter);
 
 app.use('/boards/:boardId/tasks', taskRouter);
+
+app.use('*', (req) => {
+  const { method, originalUrl } = req;
+  throw new errors.NOT_FOUND(RouteMessages.getNonExistent(method, originalUrl));
+});
 
 app.use(errorHandler);
 
@@ -43,6 +50,3 @@ process.on('uncaughtException', (err) => {
 process.on('unhandledRejection', (err: Error) => {
   logger.error(err.stack || err.toString());
 });
-
-// throw new Error('Oups');
-// Promise.reject(Error('oups'));

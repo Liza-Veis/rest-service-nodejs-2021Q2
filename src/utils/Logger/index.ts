@@ -41,8 +41,8 @@ export class Logger {
     const levelColors = { ...DEFAULT_COLORS.levels, ...colors.levels };
 
     this.colors = { ...DEFAULT_COLORS, ...colors, levels: levelColors };
-    this.requestHandler = this.requestHandler.bind(this);
     this.maxFileSize = maxFileSizeInBytes;
+    this.requestHandler = this.requestHandler.bind(this);
     Logger.maxLevelLength = Math.max(
       ...Logger.levels.map((level) => level.length)
     );

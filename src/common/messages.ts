@@ -16,3 +16,8 @@ export const TaskMessages = {
   creationError: "Task entity to create isn't valid",
   updateError: "Task entity to update isn't valid",
 };
+
+export const RouteMessages = {
+  getNonExistent: (method: string, route: string): string =>
+    `Cannot ${method}:${route}`,
+};
