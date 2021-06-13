@@ -1,8 +1,12 @@
-import express, { ErrorRequestHandler } from 'express';
+import express from 'express';
 import swaggerUI from 'swagger-ui-express';
 import path from 'path';
 import YAML from 'yamljs';
-import { StatusCodes, ReasonPhrases } from 'http-status-codes';
+
+import * as errors from './errors';
+import { RouteMessages } from './common/messages';
+import { logger } from './utils/appLogger';
+import { errorHandler } from './utils/appErrorHandler';
 
 import { router as userRouter } from './resources/users/user.router';
 import { router as boardRouter } from './resources/boards/board.router';
@@ -12,6 +16,8 @@ export const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
 app.use(express.json());
+
+app.use(logger.requestHandler);
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
@@ -29,14 +35,18 @@ app.use('/boards', boardRouter);
 
 app.use('/boards/:boardId/tasks', taskRouter);
 
-app.use(((err, _, res, next) => {
-  if (err?.status) {
-    res.status(err.status).send(err.message);
-  } else if (err) {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send(ReasonPhrases.INTERNAL_SERVER_ERROR);
-  }
+app.use('*', (req) => {
+  const { method, originalUrl } = req;
+  throw new errors.NOT_FOUND(RouteMessages.getNonExistent(method, originalUrl));
+});
 
-  next();
-}) as ErrorRequestHandler);
+app.use(errorHandler);
+
+process.on('uncaughtException', (err) => {
+  logger.error(err.stack || err.toString());
+  logger.finish().then(() => process.exit(1));
+});
+
+process.on('unhandledRejection', (err: Error) => {
+  logger.error(err.stack || err.toString());
+});
