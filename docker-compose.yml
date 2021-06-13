@@ -26,5 +26,4 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
 networks:
   default:
-    external: true
     name: rest-service-network
