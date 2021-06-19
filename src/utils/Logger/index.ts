@@ -11,7 +11,7 @@ import {
 import { Request, Response, NextFunction } from 'express';
 import chalk from 'chalk';
 import { DEFAULT_COLORS, DEFAULT_MAX_FILE_SIZE, LEVELS } from './config';
-import { replaceAnsiStream } from './replaceAnsiStream';
+import { replaceAnsiColorsStream } from './replaceAnsiColorsStream';
 import {
   ConsoleStreamConfig,
   FileStreamConfig,
@@ -49,7 +49,7 @@ export class Logger {
   }
 
   createFileStream({ levels, filePath }: FileStreamConfig): void {
-    const transformStream = replaceAnsiStream();
+    const transformStream = replaceAnsiColorsStream();
     const dirPath = path.dirname(filePath);
     if (!existsSync(dirPath)) {
       mkdirSync(dirPath, { recursive: true });

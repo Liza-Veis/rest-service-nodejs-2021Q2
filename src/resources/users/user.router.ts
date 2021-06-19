@@ -9,7 +9,7 @@ import { catchError } from '../../utils/catchError';
 export const router = Router();
 
 router.route('/').get(
-  catchError(async (_: Request, res: Response) => {
+  catchError(async (_req: Request, res: Response) => {
     const users = await usersService.getAll();
 
     res.json(users.map(User.toResponse));

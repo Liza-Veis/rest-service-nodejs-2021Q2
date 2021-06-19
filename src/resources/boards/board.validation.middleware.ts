@@ -8,7 +8,7 @@ const columnFields = ['id', 'title', 'order'];
 
 export const validateBoard = (
   req: Request,
-  _: Response,
+  _res: Response,
   next: NextFunction
 ): void => {
   const errorMessage =

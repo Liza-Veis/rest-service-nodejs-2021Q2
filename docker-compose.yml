@@ -8,7 +8,6 @@ services:
     volumes:
       - ./src:/app/src
       - ./logs:/app/logs
-      - ./database:/app/database
     depends_on:
       - postgres
     restart: on-failure
@@ -19,6 +18,8 @@ services:
     image: lizaveis/postgres
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
+   volumes:
+      - ./data:/var/lib/postgresql/data
     restart: on-failure
     environment:
       POSTGRES_USER: ${POSTGRES_USER}

@@ -7,9 +7,9 @@ const pattern = [
 
 const ansiRegex = new RegExp(pattern, 'g');
 
-export const replaceAnsiStream = (): Transform =>
+export const replaceAnsiColorsStream = (): Transform =>
   new Transform({
-    transform(chunk, _, callback) {
+    transform(chunk, _encoding, callback) {
       this.push(chunk.toString().replace(ansiRegex, ''));
 
       callback();

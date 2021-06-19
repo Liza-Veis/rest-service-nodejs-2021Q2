@@ -14,7 +14,7 @@ const taskFields = [
 
 export const validateTask = (
   req: Request,
-  _: Response,
+  _res: Response,
   next: NextFunction
 ): void => {
   const errorMessage =
