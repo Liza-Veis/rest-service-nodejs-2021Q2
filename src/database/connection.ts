@@ -1,5 +1,5 @@
 import { createConnection } from 'typeorm';
-import { config } from './ormconfig';
+import config from './ormconfig';
 import { logger } from '../utils/appLogger';
 
 export const connectToDB = async (cb: () => void): Promise<void> => {
