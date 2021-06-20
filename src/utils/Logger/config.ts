@@ -8,7 +8,7 @@ const getStatusColor = (status: number): Color => {
 };
 
 export const DEFAULT_COLORS: LoggerColors = {
-  levels: { info: 'blue', error: 'red' },
+  levels: { info: 'green', error: 'red', http: 'blue' },
   date: 'cyan',
   duration: 'magenta',
   method: 'yellow',
@@ -17,4 +17,4 @@ export const DEFAULT_COLORS: LoggerColors = {
 
 export const DEFAULT_MAX_FILE_SIZE = 10000000; // 10MB
 
-export const LEVELS: Level[] = ['info', 'error'];
+export const LEVELS: Level[] = ['info', 'error', 'http'];

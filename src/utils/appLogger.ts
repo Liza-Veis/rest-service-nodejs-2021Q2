@@ -5,8 +5,8 @@ export const logger = new Logger({
 });
 
 logger.createFileStream({
-  levels: ['info', 'error'],
+  levels: ['http', 'error'],
   filePath: './logs/combined.log',
 });
 logger.createFileStream({ levels: ['error'], filePath: './logs/error.log' });
-logger.createConsoleStream({ levels: ['info', 'error'] });
+logger.createConsoleStream();
