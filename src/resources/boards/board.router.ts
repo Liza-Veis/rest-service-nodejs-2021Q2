@@ -1,7 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { Router, Request, Response } from 'express';
 
-import { Board } from './board.model';
 import * as boardsService from './board.service';
 import { validateBoard } from './board.validation.middleware';
 import { catchError } from '../../utils/catchError';
@@ -28,7 +27,7 @@ router.route('/:id').get(
 router.route('/').post(
   validateBoard,
   catchError(async (req: Request, res: Response) => {
-    const board = await boardsService.create(new Board(req.body));
+    const board = await boardsService.create(req.body);
 
     res.status(StatusCodes.CREATED).json(board);
   })

@@ -1,14 +1,18 @@
-import * as DB from '../../common/inMemoryDb';
+import { getRepository } from 'typeorm';
 import { UserMessages } from '../../common/messages';
 import * as errors from '../../errors';
-import { User } from './user.model';
+import { User } from '../../entities/User';
 
-const GROUP = 'users';
-
-export const getAll = async (): Promise<User[]> => DB.getAllEntities(GROUP)!;
+export const getAll = async (): Promise<User[]> => {
+  const userRepository = getRepository(User);
+  return userRepository.find();
+};
 
 export const getById = async (id: string): Promise<User> => {
-  const user: User | null = await DB.getEntity(GROUP, { id });
+  const userRepository = getRepository(User);
+  const user = await userRepository.findOne(id).catch(() => {
+    throw new errors.NOT_FOUND(UserMessages.getNotFound(id));
+  });
 
   if (!user) throw new errors.NOT_FOUND(UserMessages.getNotFound(id));
 
@@ -16,7 +20,8 @@ export const getById = async (id: string): Promise<User> => {
 };
 
 export const create = async (user: User): Promise<User> => {
-  const createdUser = await DB.createEntity(GROUP, user);
+  const userRepository = getRepository(User);
+  const createdUser = await userRepository.save(userRepository.create(user));
 
   if (!createdUser) throw new errors.BAD_REQUEST(UserMessages.creationError);
 
@@ -27,15 +32,25 @@ export const update = async (
   id: string,
   data: Partial<User>
 ): Promise<User> => {
-  const user = await DB.updateEntity(GROUP, { id }, data);
+  const userRepository = getRepository(User);
+  const result = await userRepository.update(id, data).catch(() => {
+    throw new errors.BAD_REQUEST(UserMessages.updateError);
+  });
 
-  if (!user) throw new errors.BAD_REQUEST(UserMessages.updateError);
+  if (!result.affected) {
+    throw new errors.NOT_FOUND(UserMessages.getNotFound(id));
+  }
 
-  return user;
+  return getById(id);
 };
 
 export const remove = async (id: string): Promise<void> => {
-  const isRemoved = await DB.removeEntity(GROUP, { id });
+  const userRepository = getRepository(User);
+  const result = await userRepository.delete(id).catch(() => {
+    throw new errors.BAD_REQUEST(UserMessages.deletionError);
+  });
 
-  if (!isRemoved) throw new errors.NOT_FOUND(UserMessages.getNotFound(id));
+  if (!result.affected) {
+    throw new errors.NOT_FOUND(UserMessages.getNotFound(id));
+  }
 };

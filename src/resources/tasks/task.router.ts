@@ -1,7 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { Router, Request, Response } from 'express';
 
-import { Task } from './task.model';
 import * as tasksService from './task.service';
 import { validateTask } from './task.validation.middleware';
 import { catchError } from '../../utils/catchError';
@@ -30,7 +29,7 @@ router.route('/').post(
   validateTask,
   catchError(async (req: Request, res: Response) => {
     const { boardId } = req.params;
-    const task = await tasksService.create(new Task({ ...req.body, boardId }));
+    const task = await tasksService.create({ ...req.body, boardId });
 
     res.status(StatusCodes.CREATED).json(task);
   })

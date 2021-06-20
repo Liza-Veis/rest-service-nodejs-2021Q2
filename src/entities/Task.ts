@@ -1,12 +1,11 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  Column as TColumn,
+  Column,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
 import { User } from './User';
-import { Column } from './Column';
 import { Board } from './Board';
 
 @Entity('tasks')
@@ -14,46 +13,42 @@ export class Task {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @TColumn({
+  @Column({
     type: 'varchar',
     default: 'TASK',
   })
   title: string;
 
-  @TColumn({
+  @Column({
     type: 'varchar',
     default: '',
   })
   description: string;
 
-  @TColumn({
+  @Column({
     type: 'int',
     default: 0,
   })
   order: number;
 
-  @TColumn({
+  @Column({
     default: null,
   })
-  userId: number;
+  userId: string;
 
-  @TColumn({
+  @Column({
     default: null,
   })
-  columnId: number;
+  columnId: string;
 
-  @TColumn({
+  @Column({
     nullable: false,
   })
-  boardId: number;
+  boardId: string;
 
   @ManyToOne(() => User, { onDelete: 'SET NULL' })
   @JoinColumn()
   user: User;
-
-  @ManyToOne(() => Column)
-  @JoinColumn()
-  column: Column;
 
   @ManyToOne(() => Board, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn()

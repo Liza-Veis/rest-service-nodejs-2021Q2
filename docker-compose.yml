@@ -12,13 +12,14 @@ services:
       - postgres
     restart: on-failure
     environment:
+      - POSTGRES_HOST=host.docker.internal
       - PORT=${PORT}
   postgres:
     build: ./src/database/
     image: lizaveis/postgres
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
-   volumes:
+    volumes:
       - ./data:/var/lib/postgresql/data
     restart: on-failure
     environment:

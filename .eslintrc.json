@@ -26,6 +26,7 @@
       }
     }
   },
+  "ignorePatterns": ["**/migrations", "**/entities/"],
   "extends": [
     "eslint:recommended",
     "plugin:node/recommended",

@@ -1,32 +1,29 @@
-import * as DB from '../../common/inMemoryDb';
+import { getRepository } from 'typeorm';
 import { TaskMessages } from '../../common/messages';
 import * as errors from '../../errors';
-import { Task } from './task.model';
-
-const GROUP = 'tasks';
+import { Task } from '../../entities/Task';
 
 export const getAll = async (boardId: string): Promise<Task[]> => {
-  const tasks = await DB.getAllEntities(GROUP)!;
-
-  return tasks.filter((task) => task.boardId === boardId);
-};
-
-export const getAllByUserId = async (userId: string): Promise<Task[]> => {
-  const tasks = await DB.getAllEntities(GROUP)!;
-
-  return tasks.filter((task) => task.userId === userId);
+  const tasksRepository = getRepository(Task);
+  return tasksRepository.find({ where: { boardId } });
 };
 
 export const getById = async (boardId: string, id: string): Promise<Task> => {
-  const task = await DB.getEntity(GROUP, { boardId, id });
+  const tasksRepository = getRepository(Task);
+  const task = await tasksRepository
+    .findOne({ where: { boardId, id } })
+    .catch(() => {
+      throw new errors.NOT_FOUND(TaskMessages.getNotFound(boardId, id));
+    });
 
-  if (!task) throw new errors.NOT_FOUND(TaskMessages.getNotFound(id, boardId));
+  if (!task) throw new errors.NOT_FOUND(TaskMessages.getNotFound(boardId, id));
 
   return task;
 };
 
 export const create = async (task: Task): Promise<Task> => {
-  const createdTask = await DB.createEntity(GROUP, task);
+  const tasksRepository = getRepository(Task);
+  const createdTask = await tasksRepository.save(tasksRepository.create(task));
 
   if (!createdTask) throw new errors.BAD_REQUEST(TaskMessages.creationError);
 
@@ -38,17 +35,25 @@ export const update = async (
   id: string,
   data: Partial<Task>
 ): Promise<Task> => {
-  const task = await DB.updateEntity(GROUP, { boardId, id }, data);
+  const tasksRepository = getRepository(Task);
+  const result = await tasksRepository.update(id, data).catch(() => {
+    throw new errors.BAD_REQUEST(TaskMessages.updateError);
+  });
 
-  if (!task) throw new errors.BAD_REQUEST(TaskMessages.updateError);
+  if (!result.affected) {
+    throw new errors.NOT_FOUND(TaskMessages.getNotFound(boardId, id));
+  }
 
-  return task;
+  return getById(boardId, id);
 };
 
 export const remove = async (boardId: string, id: string): Promise<void> => {
-  const isRemoved = await DB.removeEntity(GROUP, { boardId, id });
+  const tasksRepository = getRepository(Task);
+  const result = await tasksRepository.delete({ boardId, id }).catch(() => {
+    throw new errors.BAD_REQUEST(TaskMessages.deletionError);
+  });
 
-  if (!isRemoved) {
-    throw new errors.NOT_FOUND(TaskMessages.getNotFound(id, boardId));
+  if (!result.affected) {
+    throw new errors.NOT_FOUND(TaskMessages.getNotFound(boardId, id));
   }
 };

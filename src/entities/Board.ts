@@ -1,26 +1,21 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column as TColumn,
-  OneToMany,
-} from 'typeorm';
-import { Column } from './Column';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Task } from './Task';
+import { Column as ColumnModel } from '../resources/boards/column.model';
 
 @Entity('boards')
 export class Board {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @TColumn({
+  @Column({
     type: 'varchar',
     default: 'BOARD',
   })
   title: string;
 
-  @OneToMany(() => Column, (column) => column.board)
-  columns: Column[];
+  @Column({ type: 'json' })
+  columns: ColumnModel[];
 
   @OneToMany(() => Task, (task) => task.board)
-  tasks: Column[];
+  tasks: Task[];
 }
