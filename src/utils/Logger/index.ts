@@ -11,7 +11,7 @@ import {
 import { Request, Response, NextFunction } from 'express';
 import chalk from 'chalk';
 import { DEFAULT_COLORS, DEFAULT_MAX_FILE_SIZE, LEVELS } from './config';
-import { replaceAnsiStream } from './replaceAnsiStream';
+import { replaceAnsiColorsStream } from './replaceAnsiColorsStream';
 import {
   ConsoleStreamConfig,
   FileStreamConfig,
@@ -30,7 +30,7 @@ export class Logger {
 
   readonly maxFileSize: number;
 
-  private streams: Streams = { info: [], error: [] };
+  private streams: Streams = { info: [], error: [], http: [] };
 
   private static maxLevelLength: number;
 
@@ -49,7 +49,7 @@ export class Logger {
   }
 
   createFileStream({ levels, filePath }: FileStreamConfig): void {
-    const transformStream = replaceAnsiStream();
+    const transformStream = replaceAnsiColorsStream();
     const dirPath = path.dirname(filePath);
     if (!existsSync(dirPath)) {
       mkdirSync(dirPath, { recursive: true });
@@ -81,7 +81,7 @@ export class Logger {
     this.addStream({ levels, stream });
   }
 
-  createConsoleStream({ levels }: ConsoleStreamConfig): void {
+  createConsoleStream({ levels }: ConsoleStreamConfig = {}): void {
     let finishCallback: () => void;
     const onFinish = (callback: () => void) => {
       finishCallback = callback;
@@ -114,7 +114,7 @@ export class Logger {
       const duration = Logger.getDurationInMs(start, process.hrtime.bigint());
       const log = this.getRequestLog(req, duration, statusCode);
 
-      this.info(log);
+      this.http(log);
     });
 
     next();
@@ -122,6 +122,10 @@ export class Logger {
 
   info(log: string): void {
     this.logToLevel('info', log);
+  }
+
+  http(log: string): void {
+    this.logToLevel('http', log);
   }
 
   error(log: string): void {
@@ -153,7 +157,7 @@ export class Logger {
     });
   }
 
-  private addStream({ levels, stream }: AddStreamConfig): void {
+  private addStream({ levels = Logger.levels, stream }: AddStreamConfig): void {
     levels.forEach((level) => {
       this.streams[level].push(
         typeof stream === 'function' ? stream(level) : stream
@@ -198,6 +202,7 @@ export class Logger {
   }
 
   private rotateFile(filePath: string, chunkSize: number) {
+    if (chunkSize > this.maxFileSize) return;
     let content = readFileSync(filePath).toString();
 
     while (Buffer.byteLength(content) + chunkSize > this.maxFileSize) {

@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 export type Color = typeof chalk.Color;
 
-export type Level = 'info' | 'error';
+export type Level = 'info' | 'error' | 'http';
 
 export type Stream = {
   write: (log: string) => void;
@@ -25,15 +25,13 @@ export type ColorsConfig = Partial<Omit<LoggerColors, 'levels'>> & {
 };
 
 export type AddStreamConfig = {
-  levels: Level[];
+  levels?: Level[];
   stream: Stream | ((level: Level) => Stream);
 };
 
 export type FileStreamConfig = {
-  levels: Level[];
+  levels?: Level[];
   filePath: string;
 };
 
-export type ConsoleStreamConfig = {
-  levels: Level[];
-};
+export type ConsoleStreamConfig = { levels?: Level[] };

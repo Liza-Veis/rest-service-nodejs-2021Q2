@@ -1,11 +1,8 @@
 import * as tasksRepo from './task.memory.repository';
-import { Task } from './task.model';
+import { Task } from '../../entities/Task';
 
 export const getAll = (boardId: string): Promise<Task[]> =>
   tasksRepo.getAll(boardId);
-
-export const getAllByUserId = (userId: string): Promise<Task[]> =>
-  tasksRepo.getAllByUserId(userId);
 
 export const getById = (boardId: string, id: string): Promise<Task> =>
   tasksRepo.getById(boardId, id);

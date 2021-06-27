@@ -6,7 +6,7 @@ const userFields = ['id', 'name', 'login', 'password'];
 
 export const validateUser = (
   req: Request,
-  _: Response,
+  _res: Response,
   next: NextFunction
 ): void => {
   const errorMessage =
