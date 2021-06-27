@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { BoardMessages } from '../../common/messages';
-import * as errors from '../../errors';
+import { BoardMessage } from '../../common/messages';
+import { errors } from '../../errors';
 import { Column } from './column.model';
 
 const boardFields = ['id', 'title', 'columns'];
@@ -13,8 +13,8 @@ export const validateBoard = (
 ): void => {
   const errorMessage =
     req.method === 'POST'
-      ? BoardMessages.creationError
-      : BoardMessages.updateError;
+      ? BoardMessage.creationError
+      : BoardMessage.updateError;
   const props = Object.keys(req.body || []);
 
   if (!props.length) {

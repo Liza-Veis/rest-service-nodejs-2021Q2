@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserMessages } from '../../common/messages';
-import * as errors from '../../errors';
+import { UserMessage } from '../../common/messages';
+import { errors } from '../../errors';
 
 const userFields = ['id', 'name', 'login', 'password'];
 
@@ -10,9 +10,7 @@ export const validateUser = (
   next: NextFunction
 ): void => {
   const errorMessage =
-    req.method === 'POST'
-      ? UserMessages.creationError
-      : UserMessages.updateError;
+    req.method === 'POST' ? UserMessage.creationError : UserMessage.updateError;
   const props = Object.keys(req.body || []);
 
   if (!props.length) {

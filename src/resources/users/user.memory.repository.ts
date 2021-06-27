@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
-import { UserMessages } from '../../common/messages';
-import * as errors from '../../errors';
+import { UserMessage } from '../../common/messages';
+import { errors } from '../../errors';
 import { User } from '../../entities/User';
 
 export const getAll = async (): Promise<User[]> => {
@@ -11,10 +11,21 @@ export const getAll = async (): Promise<User[]> => {
 export const getById = async (id: string): Promise<User> => {
   const userRepository = getRepository(User);
   const user = await userRepository.findOne(id).catch(() => {
-    throw new errors.NOT_FOUND(UserMessages.getNotFound(id));
+    throw new errors.NOT_FOUND(UserMessage.getNotFound(id));
   });
 
-  if (!user) throw new errors.NOT_FOUND(UserMessages.getNotFound(id));
+  if (!user) throw new errors.NOT_FOUND(UserMessage.getNotFound(id));
+
+  return user;
+};
+
+export const getByProps = async (data: Partial<User>): Promise<User> => {
+  const userRepository = getRepository(User);
+  const user = await userRepository.findOne(data).catch(() => {
+    throw new errors.NOT_FOUND(UserMessage.getNotFoundWithProps(data));
+  });
+
+  if (!user) throw new errors.NOT_FOUND(UserMessage.getNotFoundWithProps(data));
 
   return user;
 };
@@ -23,7 +34,7 @@ export const create = async (user: User): Promise<User> => {
   const userRepository = getRepository(User);
   const createdUser = await userRepository.save(userRepository.create(user));
 
-  if (!createdUser) throw new errors.BAD_REQUEST(UserMessages.creationError);
+  if (!createdUser) throw new errors.BAD_REQUEST(UserMessage.creationError);
 
   return createdUser;
 };
@@ -40,7 +51,7 @@ export const update = async (
   });
 
   const updatedUser = await userRepository.save(user).catch(() => {
-    throw new errors.BAD_REQUEST(UserMessages.updateError);
+    throw new errors.BAD_REQUEST(UserMessage.updateError);
   });
 
   return updatedUser;
@@ -49,10 +60,10 @@ export const update = async (
 export const remove = async (id: string): Promise<void> => {
   const userRepository = getRepository(User);
   const result = await userRepository.delete(id).catch(() => {
-    throw new errors.BAD_REQUEST(UserMessages.deletionError);
+    throw new errors.BAD_REQUEST(UserMessage.deletionError);
   });
 
   if (!result.affected) {
-    throw new errors.NOT_FOUND(UserMessages.getNotFound(id));
+    throw new errors.NOT_FOUND(UserMessage.getNotFound(id));
   }
 };

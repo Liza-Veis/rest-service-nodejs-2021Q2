@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
-import { BoardMessages } from '../../common/messages';
-import * as errors from '../../errors';
+import { BoardMessage } from '../../common/messages';
+import { errors } from '../../errors';
 import { Board } from '../../entities/Board';
 
 export const getAll = async (): Promise<Board[]> => {
@@ -11,10 +11,10 @@ export const getAll = async (): Promise<Board[]> => {
 export const getById = async (id: string): Promise<Board> => {
   const boardRepository = getRepository(Board);
   const board = await boardRepository.findOne(id).catch(() => {
-    throw new errors.NOT_FOUND(BoardMessages.getNotFound(id));
+    throw new errors.NOT_FOUND(BoardMessage.getNotFound(id));
   });
 
-  if (!board) throw new errors.NOT_FOUND(BoardMessages.getNotFound(id));
+  if (!board) throw new errors.NOT_FOUND(BoardMessage.getNotFound(id));
 
   return board;
 };
@@ -26,7 +26,7 @@ export const create = async (board: Board): Promise<Board> => {
     boardRepository.create(board)
   );
 
-  if (!createdBoard) throw new errors.BAD_REQUEST(BoardMessages.creationError);
+  if (!createdBoard) throw new errors.BAD_REQUEST(BoardMessage.creationError);
 
   return createdBoard;
 };
@@ -37,11 +37,11 @@ export const update = async (
 ): Promise<Board> => {
   const boardRepository = getRepository(Board);
   const result = await boardRepository.update(id, data).catch(() => {
-    throw new errors.BAD_REQUEST(BoardMessages.updateError);
+    throw new errors.BAD_REQUEST(BoardMessage.updateError);
   });
 
   if (!result.affected) {
-    throw new errors.NOT_FOUND(BoardMessages.getNotFound(id));
+    throw new errors.NOT_FOUND(BoardMessage.getNotFound(id));
   }
 
   return getById(id);
@@ -50,10 +50,10 @@ export const update = async (
 export const remove = async (id: string): Promise<void> => {
   const boardRepository = getRepository(Board);
   const result = await boardRepository.delete(id).catch(() => {
-    throw new errors.BAD_REQUEST(BoardMessages.deletionError);
+    throw new errors.BAD_REQUEST(BoardMessage.deletionError);
   });
 
   if (!result.affected) {
-    throw new errors.NOT_FOUND(BoardMessages.getNotFound(id));
+    throw new errors.NOT_FOUND(BoardMessage.getNotFound(id));
   }
 };

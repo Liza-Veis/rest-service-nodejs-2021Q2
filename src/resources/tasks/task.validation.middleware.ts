@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { TaskMessages } from '../../common/messages';
-import * as errors from '../../errors';
+import { TaskMessage } from '../../common/messages';
+import { errors } from '../../errors';
 
 const taskFields = [
   'id',
@@ -18,9 +18,7 @@ export const validateTask = (
   next: NextFunction
 ): void => {
   const errorMessage =
-    req.method === 'POST'
-      ? TaskMessages.creationError
-      : TaskMessages.updateError;
+    req.method === 'POST' ? TaskMessage.creationError : TaskMessage.updateError;
   const props = Object.keys(req.body || []);
 
   if (!props.length) {
