@@ -6,13 +6,13 @@ import YAML from 'yamljs';
 import { errors } from './errors';
 import { RouteMessage } from './common/messages';
 import { logger } from './utils/appLogger';
-import { errorHandler } from './utils/appErrorHandler';
+import { handleError } from './middlewares/handle-error.middleware';
+import { authorize } from './middlewares/authorization.middleware';
 
 import { router as loginRouter } from './resources/login/login.router';
 import { router as userRouter } from './resources/users/user.router';
 import { router as boardRouter } from './resources/boards/board.router';
 import { router as taskRouter } from './resources/tasks/task.router';
-import { checkToken } from './utils/checkToken';
 
 export const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -21,7 +21,7 @@ app.use(express.json());
 
 app.use(logger.requestHandler);
 
-app.use(checkToken);
+app.use(authorize);
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
@@ -46,7 +46,7 @@ app.use('*', (req) => {
   throw new errors.NOT_FOUND(RouteMessage.getNonExistent(method, originalUrl));
 });
 
-app.use(errorHandler);
+app.use(handleError);
 
 process.on('uncaughtException', (err) => {
   logger.error(err.stack || err.toString());

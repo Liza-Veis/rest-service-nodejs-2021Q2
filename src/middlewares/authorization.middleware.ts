@@ -6,7 +6,7 @@ import { WHITE_ROUTES } from '../common/constants';
 import { LoginMessage } from '../common/messages';
 import { errors } from '../errors';
 
-export const checkToken: RequestHandler = (req, _res, next) => {
+export const authorize: RequestHandler = (req, _res, next) => {
   if (WHITE_ROUTES.some((route) => match(route, req.path).matches)) {
     return next();
   }

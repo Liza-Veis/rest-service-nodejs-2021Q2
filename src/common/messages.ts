@@ -34,3 +34,7 @@ export const RouteMessage = {
   getNonExistent: (method: string, route: string): string =>
     `Cannot ${method}:${route}`,
 };
+
+export const ValidationMessage = {
+  getErrorMessage: (error: string) : string => `Validation Error: ${error}`
+}

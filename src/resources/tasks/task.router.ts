@@ -1,11 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 import { Router, Request, Response } from 'express';
-
 import * as tasksService from './task.service';
-import { validateTask } from './task.validation.middleware';
+import { TaskSchema } from '../../schemas/task.schema';
+import { validate } from '../../middlewares/validation.middleware';
 import { catchError } from '../../utils/catchError';
 
 export const router = Router({ mergeParams: true });
+const validationMiddleware = validate(TaskSchema);
 
 router.route('/').get(
   catchError(async (req: Request, res: Response) => {
@@ -26,7 +27,7 @@ router.route('/:id').get(
 );
 
 router.route('/').post(
-  validateTask,
+  validationMiddleware,
   catchError(async (req: Request, res: Response) => {
     const { boardId } = req.params;
     const task = await tasksService.create({ ...req.body, boardId });
@@ -36,7 +37,7 @@ router.route('/').post(
 );
 
 router.route('/:id').put(
-  validateTask,
+  validationMiddleware,
   catchError(async (req: Request, res: Response) => {
     const { boardId, id } = req.params;
     const task = await tasksService.update(boardId!, id!, req.body);
