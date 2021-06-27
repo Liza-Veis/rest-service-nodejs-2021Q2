@@ -27,6 +27,7 @@ export const TaskMessage = {
 export const LoginMessage = {
   validationError: 'Invalid login data',
   loginError: 'Wrong login/password combination',
+  authorizeError: 'Failed to authorize',
 };
 
 export const RouteMessage = {

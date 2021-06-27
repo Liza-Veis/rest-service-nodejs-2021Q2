@@ -12,6 +12,7 @@ import { router as loginRouter } from './resources/login/login.router';
 import { router as userRouter } from './resources/users/user.router';
 import { router as boardRouter } from './resources/boards/board.router';
 import { router as taskRouter } from './resources/tasks/task.router';
+import { checkToken } from './utils/checkToken';
 
 export const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -19,6 +20,8 @@ const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 app.use(express.json());
 
 app.use(logger.requestHandler);
+
+app.use(checkToken);
 
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
