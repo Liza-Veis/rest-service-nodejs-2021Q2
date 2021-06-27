@@ -24,3 +24,6 @@ export const POSTGRES = {
 
 const { AUTH_MODE: isAuthMode } = process.env;
 export const AUTH_MODE = !!isAuthMode;
+
+const { SALT_ROUNDS: saltRounds } = process.env;
+export const SALT_ROUNDS = saltRounds ? Number(saltRounds) : 10;

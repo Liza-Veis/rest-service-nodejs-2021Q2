@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BeforeInsert,
+  BeforeUpdate,
+} from 'typeorm';
+import { hashPassword } from '../utils/hashHelper';
 
 @Entity('users')
 export class User {
@@ -26,5 +33,11 @@ export class User {
   static toResponse(user: User): Omit<User, 'password'> {
     const { id, name, login } = user;
     return { id, name, login };
+  }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  protected async hashPassword() {
+    this.password = await hashPassword(this.password);
   }
 }

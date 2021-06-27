@@ -33,15 +33,17 @@ export const update = async (
   data: Partial<User>
 ): Promise<User> => {
   const userRepository = getRepository(User);
-  const result = await userRepository.update(id, data).catch(() => {
+  const user = await getById(id);
+
+  Object.entries(data).forEach(([prop, value]) => {
+    user[prop as keyof User] = value;
+  });
+
+  const updatedUser = await userRepository.save(user).catch(() => {
     throw new errors.BAD_REQUEST(UserMessages.updateError);
   });
 
-  if (!result.affected) {
-    throw new errors.NOT_FOUND(UserMessages.getNotFound(id));
-  }
-
-  return getById(id);
+  return updatedUser;
 };
 
 export const remove = async (id: string): Promise<void> => {
