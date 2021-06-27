@@ -11,46 +11,46 @@ import { Board } from './Board';
 @Entity('tasks')
 export class Task {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({
     type: 'varchar',
     default: 'TASK',
   })
-  title: string;
+  title!: string;
 
   @Column({
     type: 'varchar',
     default: '',
   })
-  description: string;
+  description!: string;
 
   @Column({
     type: 'int',
     default: 0,
   })
-  order: number;
+  order!: number;
 
   @Column({
     default: null,
   })
-  userId: string;
+  userId!: string;
 
   @Column({
     default: null,
   })
-  columnId: string;
+  columnId!: string;
 
   @Column({
     nullable: false,
   })
-  boardId: string;
+  boardId!: string;
 
   @ManyToOne(() => User, { onDelete: 'SET NULL' })
   @JoinColumn()
-  user: User;
+  user!: User;
 
   @ManyToOne(() => Board, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn()
-  board: Board;
+  board!: Board;
 }

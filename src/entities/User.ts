@@ -3,25 +3,25 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({
     type: 'varchar',
     default: 'USER',
   })
-  name: string;
+  name!: string;
 
   @Column({
     type: 'varchar',
     default: 'user',
   })
-  login: string;
+  login!: string;
 
   @Column({
     type: 'varchar',
     default: 'P@55w0rd',
   })
-  password: string;
+  password!: string;
 
   static toResponse(user: User): Omit<User, 'password'> {
     const { id, name, login } = user;

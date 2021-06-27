@@ -5,17 +5,17 @@ import { Column as ColumnModel } from '../resources/boards/column.model';
 @Entity('boards')
 export class Board {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({
     type: 'varchar',
     default: 'BOARD',
   })
-  title: string;
+  title!: string;
 
   @Column({ type: 'json' })
-  columns: ColumnModel[];
+  columns!: ColumnModel[];
 
   @OneToMany(() => Task, (task) => task.board)
-  tasks: Task[];
+  tasks!: Task[];
 }
