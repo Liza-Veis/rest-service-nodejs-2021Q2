@@ -1,8 +1,8 @@
 import { ErrorRequestHandler } from 'express';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
-import { logger } from './appLogger';
+import { logger } from '../utils/appLogger';
 
-export const errorHandler: ErrorRequestHandler = (err, _req, res, next) => {
+export const handleError: ErrorRequestHandler = (err, _req, res, next) => {
   const log = err.status ? err.message : err.stack || err;
 
   res.on('finish', () => logger.error(log));

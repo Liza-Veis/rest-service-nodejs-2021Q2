@@ -1,11 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 import { Router, Request, Response } from 'express';
-
 import * as boardsService from './board.service';
-import { validateBoard } from './board.validation.middleware';
+import { BoardSchema } from '../../schemas/board.schema';
+import { validate } from '../../middlewares/validation.middleware';
 import { catchError } from '../../utils/catchError';
 
 export const router = Router();
+const validationMiddleware = validate(BoardSchema);
 
 router.route('/').get(
   catchError(async (_req: Request, res: Response) => {
@@ -25,7 +26,7 @@ router.route('/:id').get(
 );
 
 router.route('/').post(
-  validateBoard,
+  validationMiddleware,
   catchError(async (req: Request, res: Response) => {
     const board = await boardsService.create(req.body);
 
@@ -34,7 +35,7 @@ router.route('/').post(
 );
 
 router.route('/:id').put(
-  validateBoard,
+  validationMiddleware,
   catchError(async (req: Request, res: Response) => {
     const { id } = req.params;
     const board = await boardsService.update(id!, req.body);
